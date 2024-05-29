@@ -1,14 +1,15 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Onboarding from "./pages/Onboarding/Onboarding";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>Github Work-flow added </h1>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Onboarding />} />
+        <Route path="/register" element={<Onboarding />} />
+      </Routes>
+    </Router>
   );
 }
 
