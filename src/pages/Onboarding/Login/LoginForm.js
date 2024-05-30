@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TypeWriterComponent } from "../../../features/TypeWriter/TypeWriterComponent";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./../../../firebase-config";
 import {
   Button,
@@ -18,40 +14,38 @@ import {
   Title,
 } from "../StyledForm";
 import Logo from "../../../features/Logo/Logo";
+import AuthContext from "../../../hooks/userContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        console.log("User signed in:", currentUser);
-        setUser(currentUser);
-      } else {
-        console.log("No user signed in");
-        setUser(null);
-        setUsername("");
-      }
-    });
+  const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    return () => unsubscribe();
-  }, []);
+  const handleGoHome = () => {
+    navigate("/home");
+  };
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     try {
-      const user = await signInWithEmailAndPassword(auth, username, password);
-      console.log(user);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        username,
+        password
+      );
+
+      loginUser(userCredential.user);
+      handleGoHome();
     } catch (error) {
-      console.log(error.message);
+      setError(
+        "Something went wrong. Please check your email and password and try again."
+      );
     }
   };
-
-  const logout = async () => {
-    await signOut(auth);
-  };
-
   return (
     <PageContainer>
       <TypeWriterComponent />
@@ -62,7 +56,7 @@ const LoginPage = () => {
           <Title>Login</Title>
           <Input
             type="text"
-            placeholder="Username"
+            placeholder="Email"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -72,15 +66,13 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p style={{ color: "red", fontSize: "small" }}>{error}</p>}
           <Button onClick={login}>Login</Button>
-          <p>{user?.email} is Logged in + - // </p>
 
           <FancyText>
             Don't have an account?
             <FancyLink to="/register"> Register here</FancyLink>
           </FancyText>
-
-          <button onClick={logout}>Logout</button>
         </Form>
       </FormContainer>
     </PageContainer>
