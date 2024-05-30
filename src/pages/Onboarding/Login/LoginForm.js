@@ -73,7 +73,7 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button onClick={login}>Login</Button>
-          <p>{user?.email} is Logged in + - </p>
+          <p>{user?.email} is Logged in + - // </p>
 
           <FancyText>
             Don't have an account?
