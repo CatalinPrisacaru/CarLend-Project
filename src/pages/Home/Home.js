@@ -12,7 +12,7 @@ const Home = () => {
       <WelcomeBanner />
       <BackgroundImage />
 
-      <h1>Hello {user?.email}</h1>
+      <h1>Helloo {user?.email}</h1>
       <button
         onClick={() => {
           logoutUser();
