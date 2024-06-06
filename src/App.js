@@ -4,6 +4,9 @@ import Onboarding from "./pages/Onboarding/Onboarding";
 import Home from "./pages/Home/Home";
 import { AuthProvider } from "./hooks/userContext";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import { Header } from "./components/Header/Header";
+import Layout from "./pages/Layout/Layout";
+import RentCar from "./pages/RentCar/RentCar";
 
 function App() {
   return (
@@ -13,12 +16,16 @@ function App() {
           <Route
             element={
               <>
-                <ProtectedRoutes />
+                <Header />
+                <Layout>
+                  <ProtectedRoutes />
+                </Layout>
               </>
             }
           >
             {/* protected routes */}
             <Route path="/home" element={<Home />} />
+            <Route path="/rentcar" element={<RentCar />} />
           </Route>
 
           <Route path="/login" element={<Onboarding />} />

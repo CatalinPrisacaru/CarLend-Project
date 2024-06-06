@@ -6,16 +6,25 @@ import styled from "styled-components";
 const TypeWriterContainer = styled.h1`
   width: 50%;
   padding: 0 15%;
+  top: 25%;
+  left: 10%;
   height: 100px;
   position: absolute;
   z-index: 1;
-  opacity: 0.7;
+  opacity: 0.9;
   font-family: "Bebas Neue", sans-serif;
   font-weight: 100;
   font-style: normal;
   font-size: 50px;
   letter-spacing: 3px;
-  color: black;
+  color: white;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+  @media (max-width: 1300px) {
+    padding: 0px;
+  }
 `;
 
 export const TypeWriterComponent = () => {

@@ -1,12 +1,13 @@
 // styledComponents.js
 import styled from "styled-components";
-import backgroundImage from "./trafficJam.gif";
+import backgroundImage from "../../assests/images/gifbackground.gif";
+// import backgroundImage from "../../assests/images/loginImage.jpg";
 import { Link } from "react-router-dom";
 
 export const PageContainer = styled.div`
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, #f7d9c4, #ffb07c);
+  background: black;
 `;
 
 export const ImageContainer = styled.div`
@@ -31,13 +32,19 @@ export const Form = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 400px;
+  padding-top: 50%;
+
+  @media (min-width: 1200px) {
+    padding-top: 25%;
+  }
 `;
 
 export const Title = styled.h2`
   margin-bottom: 2rem;
   text-align: center;
-  color: #8b4513;
   font-size: 2rem;
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.1em;
 `;
 
 export const Input = styled.input`
@@ -65,7 +72,7 @@ export const Button = styled.button`
   position: relative;
   padding: 1rem 2rem;
   font-size: 1rem;
-  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  background: linear-gradient(135deg, #000000, #444444);
   color: white;
   border: none;
   border-radius: 5px;
@@ -74,7 +81,7 @@ export const Button = styled.button`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: linear-gradient(135deg, #feb47b, #ff7e5f);
+    background: linear-gradient(135deg, #222222, #000000);
     transform: translateY(-3px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
   }
@@ -106,20 +113,20 @@ export const Button = styled.button`
     opacity: 0.7;
   }
 `;
-
 export const FancyText = styled.p`
   font-size: 16px;
-  color: #8b4513;
+  color: #333333;
   text-align: center;
   margin-top: 60px;
 `;
 
 export const FancyLink = styled(Link)`
-  color: #8b4513;
+  color: #333333;
   text-decoration: none;
   font-weight: bold;
 
   &:hover {
+    color: #000000;
     text-decoration: underline;
   }
 `;
