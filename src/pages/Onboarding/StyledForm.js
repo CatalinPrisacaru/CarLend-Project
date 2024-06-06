@@ -1,7 +1,7 @@
 // styledComponents.js
 import styled from "styled-components";
-import backgroundImage from "../../assests/images/gifbackground.gif";
-// import backgroundImage from "../../assests/images/loginImage.jpg";
+// import backgroundImage from "../../assests/images/gifbackground.gif";
+import backgroundImage from "../../assests/images/loginImage.jpg";
 import { Link } from "react-router-dom";
 
 export const PageContainer = styled.div`
