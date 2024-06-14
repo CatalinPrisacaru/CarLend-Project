@@ -49,7 +49,7 @@ export const ScrollDownButton = () => {
   );
 };
 
-const scrollAnimation = keyframes`
+export const scrollAnimation = keyframes`
     0% {
         transform: translateY(0);
     }

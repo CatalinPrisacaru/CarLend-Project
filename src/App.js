@@ -8,6 +8,7 @@ import { Header } from "./components/Header/Header";
 import Layout from "./pages/Layout/Layout";
 import RentCar from "./pages/RentCar/RentCar";
 import Details from "./pages/Details/Details";
+import Form from "./components/AddEdit/AddEdit";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
             {/* protected routes */}
             <Route path="/home" element={<Home />} />
             <Route path="/rentcar" element={<RentCar />} />
-            <Route path="/details" element={<Details />} />
+            <Route path="/details/:id" element={<Details />} />{" "}
+            <Route path="/form" element={<Form />} />
           </Route>
 
           <Route path="/login" element={<Onboarding />} />

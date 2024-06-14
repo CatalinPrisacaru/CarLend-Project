@@ -3,7 +3,6 @@ import AuthContext from "../../hooks/userContext";
 import { useContext } from "react";
 import WelcomeBanner, { Container } from "./Home-components/WelcomeBanner";
 import BackgroundImage from "./Home-components/BackgroundImage";
-// import carImage from "../../assests/images/test.jpg";
 
 import Carousel from "../../components/Carousel/Carousel";
 import useScrollAnimation from "../../hooks/VisibilityObserver/useScrollAnimation.js";
@@ -24,6 +23,7 @@ import {
   Offers,
   PageContainer,
   QuickLinks,
+  RentYourContainer,
   Resources,
   SearchBar,
   SocialMedia,
@@ -31,71 +31,35 @@ import {
   Steps,
   Testimonials,
 } from "./StyledHome.js";
+import { Button } from "../../components/Header/StyledHeader.js";
+import { AnimatedDiv } from "../../hooks/fadeInUpAnimation/animatedDiv.js";
+import { useFadeInUpAnimation } from "../../hooks/fadeInUpAnimation/fadeInUp.js";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const { user, logoutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { user, logoutUser, cars } = useContext(AuthContext);
+
+  const isVisible = useFadeInUpAnimation();
 
   const { targetRef: ref1, isVisible: isVisible1 } = useScrollAnimation();
   const { targetRef: ref2, isVisible: isVisible2 } = useScrollAnimation();
   const { targetRef: ref3, isVisible: isVisible3 } = useScrollAnimation();
 
-  const cars = [
-    {
-      image:
-        // carImage,
-        "https://loremflickr.com/200/300/car?t=1",
-      title: "2020 Tesla Model S",
-      price: "$120/day",
-      description:
-        "A luxury electric car with autopilot features and a range of 370 miles.",
-      location: "Suceava",
-    },
-    {
-      image:
-        // carImage,
-        "https://loremflickr.com/200/300/car?t=2",
-      title: "2019 BMW 5 Series",
-      price: "$100/day",
-      description:
-        "A stylish and powerful sedan with advanced technology and comfort.",
-      location: "Botosani",
-    },
-    {
-      image:
-        // carImage,
-        "https://loremflickr.com/200/300/car?t=3",
-      title: "2021 Ford Mustang",
-      price: "$150/day",
-      description:
-        "A classic American muscle car with a powerful V8 engine and modern amenities.",
-      location: "Cluj-Napoca",
-    },
-    {
-      image:
-        // carImage,
-        "https://loremflickr.com/200/300/car?t=4",
-      title: "2018 Honda Civic",
-      price: "$60/day",
-      description:
-        "A reliable and fuel-efficient compact car with a spacious interior.",
-      location: "Bucuresti",
-    },
-    {
-      image:
-        // carImage,
-        "https://loremflickr.com/200/300/car?t=5",
-      title: "2022 Audi Q7",
-      price: "$200/day",
-      description:
-        "A luxury SUV with a powerful engine, advanced safety features, and ample cargo space.",
-      location: "Constanta",
-    },
-  ];
-
   return (
     <PageContainer>
       <div>
         <Container100vh>
+          <RentYourContainer>
+            <AnimatedDiv
+              animationduration="2s"
+              style={{ opacity: isVisible ? 1 : 0 }}
+            >
+              <Button onClick={() => navigate("/form")}>Rent your car</Button>
+            </AnimatedDiv>
+          </RentYourContainer>
+
           <WelcomeBanner />
           <BackgroundImage />
           <ScrollDownButton />

@@ -12,7 +12,7 @@ export const PageContainer = styled.div`
 
 export const ImageContainer = styled.div`
   flex: 2;
-  background-image: url(${backgroundImage});
+  background-image: url(${backgroundImage}) !important;
   background-size: cover;
   background-position: center;
 `;
@@ -33,6 +33,7 @@ export const Form = styled.div`
   width: 100%;
   max-width: 400px;
   padding-top: 50%;
+  z-index: 2;
 
   @media (min-width: 1200px) {
     padding-top: 25%;

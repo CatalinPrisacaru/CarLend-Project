@@ -1,6 +1,6 @@
 import styled from "styled-components";
+import { scrollAnimation } from "../../components/Button/ScrollDownButton/ScrollDownButton";
 
-// Styled Components
 export const PageContainer = styled.div`
   font-family: "Roboto", sans-serif;
   color: #333;
@@ -138,4 +138,12 @@ export const SocialMedia = styled.div`
       text-decoration: underline;
     }
   }
+`;
+
+export const RentYourContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  animation: ${scrollAnimation} 2s infinite;
 `;
