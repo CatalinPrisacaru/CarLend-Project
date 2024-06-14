@@ -27,8 +27,8 @@ export const Header = () => {
         </Logo>
         <NavbarButtons>
           <Button onClick={() => navigate("/home")}>Home</Button>
-          <Button onClick={() => navigate("/rentcar")}>Explore</Button>
-          <Button onClick={() => navigate("/culture")}>Articles</Button>
+          <Button onClick={() => navigate("/rentcar")}>Rent-car</Button>
+          <Button onClick={() => navigate("/details")}>Details</Button>
           <Button onClick={() => navigate("/images")}>Contact</Button>
           <Button
             onClick={() => {
