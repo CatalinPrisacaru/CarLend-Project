@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Flickity from "react-flickity-component";
 import "flickity/css/flickity.css";
-import { ActionButton } from "../Card/Card";
+import Card from "../Card/Card";
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -13,7 +13,7 @@ const CarouselContainer = styled.div`
 
 const CarouselItem = styled.div`
   width: 350px;
-  height: 500px;
+  height: 600px;
   margin: 0px 15px 30px 15px;
   background-color: #ffffff;
   border-radius: 15px;
@@ -26,44 +26,6 @@ const CarouselItem = styled.div`
   &:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   }
-`;
-
-const Image = styled.img`
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-`;
-
-const Content = styled.div`
-  padding: 20px;
-  flex-grow: 1;
-`;
-
-const Title = styled.h3`
-  margin-bottom: 10px;
-  font-size: 1.4em;
-  color: #333333;
-`;
-
-const Price = styled.h4`
-  margin-bottom: 10px;
-  font-size: 1.2em;
-  color: #ff6347;
-`;
-
-const Description = styled.p`
-  font-size: 1em;
-  color: #666666;
-  margin-bottom: 20px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
 `;
 
 const GradientOverlay = styled.div`
@@ -84,10 +46,6 @@ const flickityOptions = {
 };
 
 const Carousel = ({ items }) => {
-  const handleBookNow = (title) => {
-    alert(`Book Now: ${title}`);
-  };
-
   return (
     <CarouselContainer>
       <Flickity
@@ -100,17 +58,7 @@ const Carousel = ({ items }) => {
       >
         {items.map((item, index) => (
           <CarouselItem key={index}>
-            <Image src={item.image} alt={item.title} />
-            <Content>
-              <Title>{item.title}</Title>
-              <Description>{item.description}</Description>
-            </Content>
-            <ButtonContainer>
-              <Price>{item.price}</Price>
-              <ActionButton onClick={() => handleBookNow(item.title)}>
-                Book Now
-              </ActionButton>
-            </ButtonContainer>
+            <Card item={item} />
             <GradientOverlay />
           </CarouselItem>
         ))}

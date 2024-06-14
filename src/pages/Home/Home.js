@@ -3,6 +3,7 @@ import AuthContext from "../../hooks/userContext";
 import { useContext } from "react";
 import WelcomeBanner, { Container } from "./Home-components/WelcomeBanner";
 import BackgroundImage from "./Home-components/BackgroundImage";
+// import carImage from "../../assests/images/test.jpg";
 
 import Carousel from "../../components/Carousel/Carousel";
 import useScrollAnimation from "../../hooks/VisibilityObserver/useScrollAnimation.js";
@@ -40,39 +41,54 @@ const HomePage = () => {
 
   const cars = [
     {
-      image: "https://source.unsplash.com/400x300/?tesla", // Specific query for Tesla
+      image:
+        // carImage,
+        "https://loremflickr.com/200/300/car?t=1",
       title: "2020 Tesla Model S",
       price: "$120/day",
       description:
         "A luxury electric car with autopilot features and a range of 370 miles.",
+      location: "Suceava",
     },
     {
-      image: "https://source.unsplash.com/400x300/?bmw", // Specific query for BMW
+      image:
+        // carImage,
+        "https://loremflickr.com/200/300/car?t=2",
       title: "2019 BMW 5 Series",
       price: "$100/day",
       description:
         "A stylish and powerful sedan with advanced technology and comfort.",
+      location: "Botosani",
     },
     {
-      image: "https://source.unsplash.com/400x300/?mustang", // Specific query for Mustang
+      image:
+        // carImage,
+        "https://loremflickr.com/200/300/car?t=3",
       title: "2021 Ford Mustang",
       price: "$150/day",
       description:
         "A classic American muscle car with a powerful V8 engine and modern amenities.",
+      location: "Cluj-Napoca",
     },
     {
-      image: "https://source.unsplash.com/400x300/?honda-civic", // Specific query for Honda Civic
+      image:
+        // carImage,
+        "https://loremflickr.com/200/300/car?t=4",
       title: "2018 Honda Civic",
       price: "$60/day",
       description:
         "A reliable and fuel-efficient compact car with a spacious interior.",
+      location: "Bucuresti",
     },
     {
-      image: "https://source.unsplash.com/400x300/?audi-q7", // Specific query for Audi Q7
+      image:
+        // carImage,
+        "https://loremflickr.com/200/300/car?t=5",
       title: "2022 Audi Q7",
       price: "$200/day",
       description:
         "A luxury SUV with a powerful engine, advanced safety features, and ample cargo space.",
+      location: "Constanta",
     },
   ];
 
