@@ -57,12 +57,14 @@ const Carousel = ({ items }) => {
         static
       >
         {!!items &&
-          items?.map((item, index) => (
-            <CarouselItem key={index}>
-              <Card item={item} />
-              <GradientOverlay />
-            </CarouselItem>
-          ))}
+          items
+            .filter((item) => item?.status === 1)
+            .map((item, index) => (
+              <CarouselItem key={index}>
+                <Card item={item} />
+                <GradientOverlay />
+              </CarouselItem>
+            ))}
       </Flickity>
     </CarouselContainer>
   );

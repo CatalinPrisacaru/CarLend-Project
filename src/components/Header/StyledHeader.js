@@ -44,6 +44,7 @@ export const NavbarButtons = styled.div`
   gap: 10px;
   z-index: 999;
   font-family: "Bebas Neue", sans-serif;
+  white-space: nowrap;
 
   @media (max-width: 480px) {
     flex-direction: column;

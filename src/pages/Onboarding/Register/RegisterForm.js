@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TypeWriterComponent } from "../../../features/TypeWriter/TypeWriterComponent";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./../../../firebase-config";
+import { auth, firestore } from "../../../firebase-config";
 import {
   Button,
   FancyLink,
@@ -13,20 +13,25 @@ import {
   PageContainer,
   Title,
 } from "../StyledForm";
+import { doc, setDoc } from "firebase/firestore";
 import Logo from "../../../features/Logo/Logo";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const register = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         username,
         password
       );
-      console.log(user, "signin");
+      const user = userCredential.user;
+
+      await setDoc(doc(firestore, "users", user.uid), {
+        email: user.email,
+        isAdmin: false,
+      });
     } catch (error) {
       console.log(error.message);
     }

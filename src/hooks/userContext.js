@@ -1,5 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { firestore } from "../firebase-config";
+import { getUserByEmail } from "../pages/Home/getUser";
 
 const AuthContext = createContext();
 
@@ -10,6 +18,7 @@ export const AuthProvider = ({ children }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
+  const [isAdmin, setIsAdmin] = useState(null);
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
@@ -36,16 +45,55 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
-  const loginUser = (userData) => {
+  useEffect(() => {
+    const fetchAdminStatus = async (email) => {
+      if (!email) return;
+      try {
+        const usersRef = collection(firestore, "users");
+        const q = query(usersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          setIsAdmin(userData.isAdmin);
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error("Error fetching admin status:", error);
+        setIsAdmin(false);
+      }
+    };
+
+    if (user && user.providerData[0]?.email) {
+      fetchAdminStatus(user.providerData[0].email);
+    }
+  }, [user]);
+
+  const loginUser = async (userData) => {
     setUser(userData);
+
+    if (userData && userData.providerData[0]?.email) {
+      const isAdmin = await getUserByEmail(userData.providerData[0].email);
+      setIsAdmin(isAdmin);
+    } else {
+      setIsAdmin(false);
+    }
   };
 
   const logoutUser = () => {
     setUser(null);
+    setIsAdmin(null);
+  };
+
+  const addCar = (car) => {
+    setCars([...cars, car]);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser, cars }}>
+    <AuthContext.Provider
+      value={{ user, isAdmin, loginUser, logoutUser, cars, addCar }}
+    >
       {children}
     </AuthContext.Provider>
   );
