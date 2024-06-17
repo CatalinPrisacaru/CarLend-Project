@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import AuthContext from "../../hooks/userContext";
 
 const FormContainer = styled.div`
   max-width: 600px;
@@ -56,6 +57,8 @@ const Button = styled.button`
 const Form = () => {
   const db = getFirestore();
   const storage = getStorage();
+  const { addCar, user } = useContext(AuthContext);
+  console.log(user.uid, "user");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -63,6 +66,9 @@ const Form = () => {
     price: "",
     location: "",
     images: [],
+    status: 0,
+    createdAt: "",
+    userId: user.uid,
   });
 
   const handleChange = (e) => {
@@ -75,7 +81,7 @@ const Form = () => {
 
   const handleFileChange = (e) => {
     const files = e.target.files;
-    const updatedImages = Array.from(files); // Convert FileList to Array
+    const updatedImages = Array.from(files);
 
     setFormData({
       ...formData,
@@ -99,6 +105,16 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, "0");
+    const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const year = now.getFullYear();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+
+    const createdAtString = `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`;
+
     try {
       const imageUrls = await Promise.all(
         formData.images.map((file) => uploadImage(file))
@@ -110,11 +126,15 @@ const Form = () => {
         price: formData.price,
         location: formData.location,
         images: imageUrls,
+        status: formData.status,
+        createdAt: createdAtString,
+        userId: formData.userId,
       };
 
       const docRef = await addDoc(collection(db, "Cars"), carData);
       console.log("Document written with ID:", docRef.id);
-      alert("Form is uploaded"); // Alert after successful upload
+      alert("Form is uploaded");
+      addCar({ ...carData, id: docRef.id });
     } catch (error) {
       console.error("Error adding document:", error);
       alert("Failed to upload form");

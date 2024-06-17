@@ -39,8 +39,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const { user, logoutUser, cars } = useContext(AuthContext);
-
+  const { logoutUser, cars, isAdmin } = useContext(AuthContext);
   const isVisible = useFadeInUpAnimation();
 
   const { targetRef: ref1, isVisible: isVisible1 } = useScrollAnimation();
@@ -64,6 +63,7 @@ const HomePage = () => {
           <BackgroundImage />
           <ScrollDownButton />
         </Container100vh>
+        <h1>Helloo {isAdmin ? "Admin" : "User"}</h1>
 
         <Container>
           <h1>Most Recent cars </h1>
@@ -72,7 +72,6 @@ const HomePage = () => {
           {isVisible1 && <Carousel items={cars} />}
         </Containerrr>
 
-        <h1>Helloo {user?.email}</h1>
         <button
           onClick={() => {
             logoutUser();

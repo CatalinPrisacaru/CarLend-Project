@@ -9,12 +9,16 @@ import Layout from "./pages/Layout/Layout";
 import RentCar from "./pages/RentCar/RentCar";
 import Details from "./pages/Details/Details";
 import Form from "./components/AddEdit/AddEdit";
+import Pendings from "./pages/Pendings/Pendings";
+import RoleProtectedRoutes from "./routes/RoleProtectedRoutes";
+import MyCars from "./pages/MyCars/MyCars";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
+          {/* protected routes */}
           <Route
             element={
               <>
@@ -25,12 +29,29 @@ function App() {
               </>
             }
           >
-            {/* protected routes */}
             <Route path="/home" element={<Home />} />
             <Route path="/rentcar" element={<RentCar />} />
+            <Route path="/mycars" element={<MyCars />} />
             <Route path="/details/:id" element={<Details />} />{" "}
             <Route path="/form" element={<Form />} />
           </Route>
+
+          {/* role protected routes  */}
+
+          <Route
+            element={
+              <>
+                <Header />
+                <Layout>
+                  <RoleProtectedRoutes />
+                </Layout>
+              </>
+            }
+          >
+            <Route path="/pendings" element={<Pendings />} />
+          </Route>
+
+          {/* public routes */}
 
           <Route path="/login" element={<Onboarding />} />
           <Route path="/register" element={<Onboarding />} />
