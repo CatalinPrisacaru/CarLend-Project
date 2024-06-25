@@ -23,7 +23,9 @@ const FormGroup = styled.div`
   }
 
   input[type="text"],
-  textarea {
+  input[type="number"],
+  textarea,
+  select {
     width: 100%;
     padding: 8px;
     font-size: 16px;
@@ -58,7 +60,6 @@ const Form = () => {
   const db = getFirestore();
   const storage = getStorage();
   const { addCar, user } = useContext(AuthContext);
-  console.log(user.uid, "user");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -66,6 +67,9 @@ const Form = () => {
     price: "",
     location: "",
     images: [],
+    gear: "Manual",
+    persons: "",
+    vehicleType: "Sedan",
     status: 0,
     createdAt: "",
     userId: user.uid,
@@ -126,6 +130,9 @@ const Form = () => {
         price: formData.price,
         location: formData.location,
         images: imageUrls,
+        gear: formData.gear,
+        persons: parseInt(formData.persons),
+        vehicleType: formData.vehicleType,
         status: formData.status,
         createdAt: createdAtString,
         userId: formData.userId,
@@ -187,6 +194,49 @@ const Form = () => {
             onChange={handleChange}
             required
           />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="gear">Gear:</label>
+          <select
+            id="gear"
+            name="gear"
+            value={formData.gear}
+            onChange={handleChange}
+            required
+          >
+            <option value="Manual">Manual</option>
+            <option value="Automatic">Automatic</option>
+          </select>
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="persons">Persons:</label>
+          <input
+            type="number"
+            id="persons"
+            name="persons"
+            value={formData.persons}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="vehicleType">Vehicle Type:</label>
+          <select
+            id="vehicleType"
+            name="vehicleType"
+            value={formData.vehicleType}
+            onChange={handleChange}
+            required
+          >
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Coupe">Coupe</option>
+            <option value="Convertible">Convertible</option>
+            <option value="Family car">Family car</option>
+            <option value="Break">Break</option>
+            <option value="Electric vehicle">Electric vehicle</option>
+            <option value="Luxury vehicle">Luxury vehicle</option>
+          </select>
         </FormGroup>
         <FormGroup>
           <label htmlFor="images">Add Images:</label>

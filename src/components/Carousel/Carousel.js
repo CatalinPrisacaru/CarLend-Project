@@ -12,7 +12,7 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselItem = styled.div`
-  width: 350px;
+  width: 400px;
   height: 600px;
   margin: 0px 15px 30px 15px;
   background-color: #ffffff;

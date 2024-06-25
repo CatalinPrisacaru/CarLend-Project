@@ -9,7 +9,7 @@ const breakpoints = {
 };
 
 const Main = styled.main`
-  max-width: 1440px;
+  max-width: 1640px;
   margin: 32px auto 0 auto;
 
   @media (max-width: ${breakpoints.medium}) {

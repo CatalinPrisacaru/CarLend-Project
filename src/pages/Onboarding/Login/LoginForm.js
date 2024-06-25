@@ -26,7 +26,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const login = async (e) => {

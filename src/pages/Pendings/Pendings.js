@@ -17,6 +17,7 @@ const TableHead = styled.th`
   text-align: left;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
+  white-space: normal;
 `;
 
 const TableRow = styled.tr`
@@ -51,7 +52,7 @@ const DetailsButton = styled.button`
 const StatusButton = styled.button`
   padding: 8px 12px;
   border: none;
-  background-color: ${(props) => (props.status === 1 ? "#28a745" : "#dc3545")};
+  background-color: ${(props) => (props.status === 0 ? "#28a745" : "#dc3545")};
   color: white;
   cursor: pointer;
   border-radius: 5px;
@@ -59,7 +60,7 @@ const StatusButton = styled.button`
 
   &:hover {
     background-color: ${(props) =>
-      props.status === 1 ? "#218838" : "#c82333"};
+      props.status === 0 ? "#218838" : "#c82333"};
   }
 
   &:focus {
@@ -68,14 +69,14 @@ const StatusButton = styled.button`
 `;
 
 const Pendings = () => {
-  const { cars } = useContext(AuthContext);
+  const { cars, fetchCars } = useContext(AuthContext);
   const [carList, setCarList] = useState([]);
   const [sortOrder, setSortOrder] = useState("ascending");
   const navigate = useNavigate();
 
   const toggleStatus = async (id) => {
     const updatedCars = carList.map((car) =>
-      car.id === id ? { ...car, status: car.status === 1 ? 0 : 1 } : car
+      car.id === id ? { ...car, status: car.status === 0 ? 1 : 0 } : car
     );
     setCarList(updatedCars);
 
@@ -86,6 +87,7 @@ const Pendings = () => {
         status: updatedCars.find((car) => car.id === id).status,
       });
       console.log("Document updated successfully!");
+      fetchCars();
     } catch (error) {
       console.error("Error updating document:", error.message);
     }
@@ -119,7 +121,6 @@ const Pendings = () => {
     const sortedCars = [...carList];
     sortedCars.sort((a, b) => {
       const dateA = new Date(convertDateFormat(a.createdAt));
-      console.log(dateA);
       const dateB = new Date(convertDateFormat(b.createdAt));
       return sortOrder === "ascending" ? dateA - dateB : dateB - dateA;
     });
@@ -141,6 +142,9 @@ const Pendings = () => {
             <TableHead>Description</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Gear</TableHead>
+            <TableHead>Persons</TableHead>
+            <TableHead>Vehicle Type</TableHead>
             <TableHead>
               Created At <button onClick={() => handleSort()}>Sort </button>
             </TableHead>
@@ -153,9 +157,16 @@ const Pendings = () => {
             <TableRow key={car.id}>
               <TableCell>{car.title}</TableCell>
               <TableCell>{car.userId}</TableCell>
-              <TableCell>{car.description}</TableCell>
+              <TableCell>
+                {car.description.length > 30
+                  ? car.description.substring(0, 30) + "..."
+                  : car.description}
+              </TableCell>
               <TableCell>{car.location}</TableCell>
               <TableCell>${car.price}</TableCell>
+              <TableCell>{car.gear}</TableCell>
+              <TableCell>{car.persons}</TableCell>
+              <TableCell>{car.vehicleType}</TableCell>{" "}
               <TableCell>
                 {new Date(convertDateFormat(car.createdAt)).toLocaleString()}
               </TableCell>
@@ -173,7 +184,7 @@ const Pendings = () => {
                   status={car.status}
                   onClick={() => toggleStatus(car.id)}
                 >
-                  {car.status === 1 ? "Activate" : "Disable"}
+                  {car.status === 0 ? "Activate" : "Disable"}
                 </StatusButton>
               </TableCell>
             </TableRow>
