@@ -23,14 +23,14 @@ export const Header = () => {
     <AnimatedDiv style={{ opacity: isVisible ? 1 : 0 }}>
       <Display>
         <Logo>
-          <h3 onClick={() => navigate("/home")}>CARLEND</h3>
+          <h3 onClick={() => navigate("/")}>CARLEND</h3>
           <VerticalLineStyled />
           {carsAvailable !== 0 && (
             <CountUp targetCount={carsAvailable} duration={1000} />
           )}
         </Logo>
         <NavbarButtons>
-          <Button onClick={() => navigate("/home")}>Home</Button>
+          <Button onClick={() => navigate("/")}>Home</Button>
           <Button onClick={() => navigate("/rentcar")}>Rent-car</Button>
           {isAdmin ? (
             <Button onClick={() => navigate("/pendings")}>Pendings cars</Button>

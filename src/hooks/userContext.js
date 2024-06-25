@@ -21,22 +21,21 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(null);
   const [cars, setCars] = useState([]);
 
+  const fetchCars = async () => {
+    try {
+      const db = getFirestore();
+      const colRef = collection(db, "Cars");
+      const snapshot = await getDocs(colRef);
+      let carsData = [];
+      snapshot.forEach((doc) => {
+        carsData.push({ ...doc.data(), id: doc.id });
+      });
+      setCars(carsData);
+    } catch (error) {
+      console.error("Error fetching cars:", error.message);
+    }
+  };
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const db = getFirestore();
-        const colRef = collection(db, "Cars");
-        const snapshot = await getDocs(colRef);
-        let carsData = [];
-        snapshot.forEach((doc) => {
-          carsData.push({ ...doc.data(), id: doc.id });
-        });
-        setCars(carsData);
-      } catch (error) {
-        console.error("Error fetching cars:", error.message);
-      }
-    };
-
     fetchCars();
   }, []);
 
@@ -92,7 +91,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAdmin, loginUser, logoutUser, cars, addCar }}
+      value={{ user, isAdmin, loginUser, logoutUser, cars, addCar, fetchCars }}
     >
       {children}
     </AuthContext.Provider>

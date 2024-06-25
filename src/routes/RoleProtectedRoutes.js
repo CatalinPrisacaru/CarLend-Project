@@ -11,7 +11,7 @@ const RoleProtectedRoutes = () => {
   return isLoggedin && isAdmin ? (
     <Outlet />
   ) : (
-    <Navigate to="/home" state={{ from: location }} replace />
+    <Navigate to="/" state={{ from: location }} replace />
   );
 };
 

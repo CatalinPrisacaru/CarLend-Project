@@ -29,7 +29,7 @@ function App() {
               </>
             }
           >
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/rentcar" element={<RentCar />} />
             <Route path="/mycars" element={<MyCars />} />
             <Route path="/details/:id" element={<Details />} />{" "}
