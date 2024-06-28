@@ -89,9 +89,29 @@ export const AuthProvider = ({ children }) => {
     setCars([...cars, car]);
   };
 
+  const editCar = (carId, updatedData) => {
+    const updatedCars = cars.map((car) => {
+      if (car.id === carId) {
+        return { ...car, ...updatedData };
+      }
+      return car;
+    });
+
+    setCars(updatedCars);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, isAdmin, loginUser, logoutUser, cars, addCar, fetchCars }}
+      value={{
+        user,
+        isAdmin,
+        loginUser,
+        logoutUser,
+        cars,
+        addCar,
+        editCar,
+        fetchCars,
+      }}
     >
       {children}
     </AuthContext.Provider>
