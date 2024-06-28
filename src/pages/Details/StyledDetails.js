@@ -67,8 +67,8 @@ export const SecondImage = styled.div`
 export const ContainerButton = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 `;
 
 export const ButtonPhoto = styled.button`
@@ -185,7 +185,7 @@ export const BackButton = styled.button`
   color: #333;
   background-color: transparent;
   border: none;
-  padding: 0;
+  padding-bottom: 20px;
   cursor: pointer;
   outline: none;
   transition: color 0.3s ease, transform 0.3s ease;
@@ -208,5 +208,66 @@ export const BackButton = styled.button`
     background-repeat: no-repeat;
     background-position: center;
     filter: grayscale(100%);
+  }
+`;
+
+export const DateRangeContainer = styled.div`
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: box-shadow 0.3s ease, transform 0.5s ease;
+
+  &:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const RentButton = styled.button`
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    transition: opacity 0.3s ease;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    opacity: 0.7;
   }
 `;

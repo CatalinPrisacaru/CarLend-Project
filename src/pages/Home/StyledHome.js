@@ -38,10 +38,16 @@ export const FeaturedCars = styled.div`
   text-align: center;
 `;
 
-export const HowItWorks = styled.div`
+export const SectionContainer = styled.div`
   background: #f8f9fa;
   padding: 4rem 0;
   text-align: center;
+`;
+
+export const TitleSectionContainer = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
 `;
 
 export const Steps = styled.div`
@@ -49,10 +55,35 @@ export const Steps = styled.div`
   justify-content: center;
 `;
 
-export const Step = styled.div`
-  margin: 1rem;
+export const StepCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(334deg, #6d7880 0%, #4b555a 60%, #2c353a 100%);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 0 1rem;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
+export const StepTitle = styled.h3`
+  font-size: 1.5rem;
+  white-space: normal;
+  color: rgba(0, 212, 255, 0.9);
+  margin-bottom: 1rem;
+`;
+
+export const StepDescription = styled.p`
+  font-size: 1.2rem;
+  color: #fff;
+`;
 export const Benefits = styled.div`
   padding: 4rem 0;
   text-align: center;

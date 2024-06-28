@@ -9,8 +9,6 @@ import useScrollAnimation from "../../hooks/VisibilityObserver/useScrollAnimatio
 import { Containerrr } from "../../hooks/VisibilityObserver/useScrollAnimation.js";
 import { ScrollDownButton } from "../../components/Button/ScrollDownButton/ScrollDownButton.js";
 import {
-  Benefit,
-  Benefits,
   CTAButton,
   CTASection,
   Container100vh,
@@ -19,17 +17,20 @@ import {
   Footer,
   HeroContent,
   HeroSection,
-  HowItWorks,
   Offers,
   PageContainer,
   QuickLinks,
   RentYourContainer,
   Resources,
   SearchBar,
+  SectionContainer,
   SocialMedia,
-  Step,
+  StepCard,
+  StepDescription,
+  StepTitle,
   Steps,
   Testimonials,
+  TitleSectionContainer,
 } from "./StyledHome.js";
 import { Button } from "../../components/Header/StyledHeader.js";
 import { AnimatedDiv } from "../../hooks/fadeInUpAnimation/animatedDiv.js";
@@ -39,12 +40,14 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const { logoutUser, cars, isAdmin } = useContext(AuthContext);
+  const { cars } = useContext(AuthContext);
   const isVisible = useFadeInUpAnimation();
 
   const { targetRef: ref1, isVisible: isVisible1 } = useScrollAnimation();
   const { targetRef: ref2, isVisible: isVisible2 } = useScrollAnimation();
   const { targetRef: ref3, isVisible: isVisible3 } = useScrollAnimation();
+
+  const suvCars = cars.filter((car) => car.vehicleType === "SUV");
 
   return (
     <PageContainer>
@@ -63,7 +66,6 @@ const HomePage = () => {
           <BackgroundImage />
           <ScrollDownButton />
         </Container100vh>
-        <h1>Helloo {isAdmin ? "Admin" : "User"}</h1>
 
         <Container>
           <h1>Most Recent cars </h1>
@@ -71,14 +73,6 @@ const HomePage = () => {
         <Containerrr ref={ref1} isVisible={isVisible1}>
           {isVisible1 && <Carousel items={cars} />}
         </Containerrr>
-
-        <button
-          onClick={() => {
-            logoutUser();
-          }}
-        >
-          Logout
-        </button>
       </div>
 
       <Containerrr ref={ref3} isVisible={isVisible3}>
@@ -99,28 +93,57 @@ const HomePage = () => {
       <Container>
         <h1>SUV </h1>
       </Container>
-
       <Containerrr ref={ref2} isVisible={isVisible2}>
-        {isVisible2 && <Carousel items={cars} />}
+        {isVisible2 && <Carousel items={suvCars} />}
       </Containerrr>
       <FeaturedCars>
         <h2>Popular Rentals</h2>
-        {/* Display popular cars here */}
       </FeaturedCars>
-      <HowItWorks>
-        <h2>How It Works</h2>
+      <SectionContainer>
+        <TitleSectionContainer>How It Works</TitleSectionContainer>
         <Steps>
-          <Step>1. Search for a car</Step>
-          <Step>2. Book your car</Step>
-          <Step>3. Enjoy your ride</Step>
+          <StepCard>
+            <StepTitle>Step 1</StepTitle>
+            <StepDescription>Search for a car</StepDescription>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Step 2</StepTitle>
+            <StepDescription>Book your car</StepDescription>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Step 3</StepTitle>
+            <StepDescription>Enjoy your ride</StepDescription>
+          </StepCard>
         </Steps>
-      </HowItWorks>
-      <Benefits>
-        <h2>Why Choose Us?</h2>
-        <Benefit>Wide Selection of Cars</Benefit>
-        <Benefit>Affordable Prices</Benefit>
-        <Benefit>Easy Booking Process</Benefit>
-      </Benefits>
+      </SectionContainer>
+
+      <SectionContainer>
+        <TitleSectionContainer>Why Choose Us?</TitleSectionContainer>
+        <Steps>
+          <StepCard>
+            <StepTitle>Wide Selection of Cars</StepTitle>
+            <StepDescription>
+              Choose from a diverse range of vehicles including sedans, SUVs,
+              luxury cars, and more.
+            </StepDescription>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Affordable Prices</StepTitle>
+            <StepDescription>
+              Enjoy competitive and budget-friendly pricing options for every
+              budget.
+            </StepDescription>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Easy Booking Process</StepTitle>
+            <StepDescription>
+              Streamlined booking process with intuitive interface and secure
+              payments.
+            </StepDescription>
+          </StepCard>
+        </Steps>
+      </SectionContainer>
+
       <Testimonials>
         <h2>What Our Users Say</h2>
         {/* Display user reviews here */}
