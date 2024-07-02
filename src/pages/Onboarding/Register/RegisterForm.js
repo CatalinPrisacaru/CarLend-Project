@@ -19,6 +19,8 @@ import Logo from "../../../features/Logo/Logo";
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
   const register = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -33,7 +35,21 @@ const RegisterPage = () => {
         isAdmin: false,
       });
     } catch (error) {
-      console.log(error.message);
+      const errorMessage = error.message;
+
+      if (errorMessage.includes("email-already-in-use")) {
+        setError("The email is already in use.");
+      } else if (errorMessage.includes("weak-password")) {
+        setError("The password is too weak.");
+      } else if (errorMessage.includes("missing-password")) {
+        setError("Password is missing. Please enter your password.");
+      } else if (errorMessage.includes("invalid-email")) {
+        setError("The email address is not valid.");
+      } else if (errorMessage.includes("missing")) {
+        setError("The email address is not valid. Please enter a valid email.");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     }
   };
 
@@ -58,6 +74,8 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button onClick={register}>Register</Button>
+          {error && <p style={{ color: "red", fontSize: "small" }}>{error}</p>}
+
           <FancyText>
             Have an account? <FancyLink to="/login"> Login here</FancyLink>
           </FancyText>

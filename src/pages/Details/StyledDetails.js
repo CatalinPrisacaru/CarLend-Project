@@ -230,6 +230,15 @@ export const DateRangeContainer = styled.div`
   }
 `;
 
+export const AdditionalInfo = styled.div`
+  flex: 1;
+  margin-left: 20px;
+`;
+
+export const InfoItem = styled.div`
+  margin-bottom: 8px;
+`;
+
 export const RentButton = styled.button`
   padding: 12px 24px;
   font-size: 16px;
