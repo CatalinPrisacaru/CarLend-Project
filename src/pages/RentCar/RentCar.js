@@ -211,6 +211,7 @@ const FilterGroup = styled.div`
     transition: all 0.3s ease;
     background-color: white;
     min-width: 200px;
+    text-align-last: center;
 
     &:focus {
       outline: none;

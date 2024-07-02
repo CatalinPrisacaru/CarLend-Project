@@ -1,78 +1,50 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../hooks/userContext";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { getFirestore, updateDoc, doc } from "firebase/firestore";
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1rem;
-  font-family: Arial, sans-serif;
-`;
-
-const TableHead = styled.th`
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  white-space: normal;
-`;
-
-const TableRow = styled.tr`
-  &:hover {
-    background-color: #f1f1f1;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-`;
-
-const DetailsButton = styled.button`
-  padding: 8px 12px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const StatusButton = styled.button`
-  padding: 8px 12px;
-  border: none;
-  background-color: ${(props) => (props.status === 0 ? "#28a745" : "#dc3545")};
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${(props) =>
-      props.status === 0 ? "#218838" : "#c82333"};
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
+import CardView from "./CardView";
+import TableView from "./TableView";
+import {
+  Container,
+  PaginationButton,
+  PaginationContainer,
+  PerPageButton,
+  SearchContainer,
+  SearchInput,
+  Table,
+  TableHead,
+  ToggleButton,
+} from "./StyledPendings";
 
 const Pendings = () => {
   const { cars, fetchCars } = useContext(AuthContext);
   const [carList, setCarList] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
   const [sortOrder, setSortOrder] = useState("ascending");
+  const [viewMode, setViewMode] = useState("card");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchName, setSearchName] = useState("");
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(5);
+
+  const indexOfLastCar = currentPage * perPage;
+  const indexOfFirstCar = indexOfLastCar - perPage;
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
+
+  const totalPages = Math.ceil(filteredCars.length / perPage);
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   const toggleStatus = async (id) => {
     const updatedCars = carList.map((car) =>
@@ -118,7 +90,7 @@ const Pendings = () => {
   };
 
   const handleSort = () => {
-    const sortedCars = [...carList];
+    const sortedCars = [...filteredCars];
     sortedCars.sort((a, b) => {
       const dateA = new Date(convertDateFormat(a.createdAt));
       const dateB = new Date(convertDateFormat(b.createdAt));
@@ -130,67 +102,143 @@ const Pendings = () => {
 
   useEffect(() => {
     setCarList(cars);
+    setFilteredCars(cars);
   }, [cars]);
+
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "card" ? "table" : "card");
+  };
+
+  const handleSearchLocation = (e) => {
+    setSearchLocation(e.target.value);
+    filterCars(searchName, e.target.value);
+  };
+
+  const handleSearchName = (e) => {
+    setSearchName(e.target.value);
+    filterCars(e.target.value, searchLocation);
+  };
+
+  const filterCars = (name, location) => {
+    const filtered = carList.filter((car) => {
+      const normalizedTitle = car.title.toLowerCase();
+      const normalizedLocation = car.location.toLowerCase();
+      const normalizedName = name.toLowerCase();
+      const normalizedLocationFilter = location.toLowerCase();
+      return (
+        normalizedTitle.includes(normalizedName) &&
+        normalizedLocation.includes(normalizedLocationFilter)
+      );
+    });
+    setFilteredCars(filtered);
+    setCurrentPage(1);
+  };
+
+  const changePerPage = (count) => {
+    setPerPage(count);
+    setCurrentPage(1);
+  };
 
   return (
     <div>
-      <Table>
-        <thead>
-          <tr>
-            <TableHead>Title</TableHead>
-            <TableHead>User ID</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Gear</TableHead>
-            <TableHead>Persons</TableHead>
-            <TableHead>Vehicle Type</TableHead>
-            <TableHead>
-              Created At <button onClick={() => handleSort()}>Sort </button>
-            </TableHead>
-            <TableHead>Details</TableHead>
-            <TableHead>Status</TableHead>
-          </tr>
-        </thead>
-        <tbody>
-          {carList.map((car) => (
-            <TableRow key={car.id}>
-              <TableCell>{car.title}</TableCell>
-              <TableCell>{car.userId}</TableCell>
-              <TableCell>
-                {car.description.length > 30
-                  ? car.description.substring(0, 30) + "..."
-                  : car.description}
-              </TableCell>
-              <TableCell>{car.location}</TableCell>
-              <TableCell>${car.price}</TableCell>
-              <TableCell>{car.gear}</TableCell>
-              <TableCell>{car.persons}</TableCell>
-              <TableCell>{car.vehicleType}</TableCell>{" "}
-              <TableCell>
-                {new Date(convertDateFormat(car.createdAt)).toLocaleString()}
-              </TableCell>
-              <TableCell>
-                <DetailsButton
-                  onClick={() => {
-                    navigate(`/details/${car.id}`);
-                  }}
-                >
-                  Details
-                </DetailsButton>
-              </TableCell>
-              <TableCell>
-                <StatusButton
-                  status={car.status}
-                  onClick={() => toggleStatus(car.id)}
-                >
-                  {car.status === 0 ? "Activate" : "Disable"}
-                </StatusButton>
-              </TableCell>
-            </TableRow>
+      <Container>
+        <ToggleButton onClick={toggleViewMode}>
+          {viewMode === "card" ? "Switch to Table View" : "Switch to Card View"}
+        </ToggleButton>
+        <SearchContainer>
+          <SearchInput
+            type="text"
+            placeholder="Search by name"
+            value={searchName}
+            onChange={handleSearchName}
+          />
+          <SearchInput
+            type="text"
+            placeholder="Search by location"
+            value={searchLocation}
+            onChange={handleSearchLocation}
+          />
+        </SearchContainer>
+        <div>
+          <PerPageButton
+            active={perPage === 5}
+            onClick={() => changePerPage(5)}
+          >
+            5 per page
+          </PerPageButton>
+          <PerPageButton
+            active={perPage === 15}
+            onClick={() => changePerPage(15)}
+          >
+            15 per page
+          </PerPageButton>
+          <PerPageButton
+            active={perPage === 25}
+            onClick={() => changePerPage(25)}
+          >
+            25 per page
+          </PerPageButton>
+        </div>
+      </Container>
+      {viewMode === "card" ? (
+        <div>
+          {currentCars.map((car) => (
+            <CardView
+              key={car.id}
+              car={car}
+              toggleStatus={toggleStatus}
+              navigate={navigate}
+            />
           ))}
-        </tbody>
-      </Table>
+        </div>
+      ) : (
+        <div>
+          <Table>
+            <thead>
+              <tr>
+                <TableHead>Title</TableHead>
+                <TableHead>User ID</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Gear</TableHead>
+                <TableHead>Persons</TableHead>
+                <TableHead>Vehicle Type</TableHead>
+                <TableHead>
+                  Created At <button onClick={() => handleSort()}>Sort</button>
+                </TableHead>
+                <TableHead>Details</TableHead>
+                <TableHead>Status</TableHead>
+              </tr>
+            </thead>
+            <tbody>
+              {currentCars.map((car) => (
+                <TableView
+                  key={car.id}
+                  car={car}
+                  toggleStatus={toggleStatus}
+                  navigate={navigate}
+                  convertDateFormat={convertDateFormat}
+                />
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      )}
+      <PaginationContainer>
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          Previous
+        </PaginationButton>
+        <span>
+          {currentPage} of {totalPages}
+        </span>
+        <PaginationButton
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </PaginationButton>
+      </PaginationContainer>
     </div>
   );
 };
