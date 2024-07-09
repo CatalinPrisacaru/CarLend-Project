@@ -12,6 +12,7 @@ import Form from "./components/AddEdit/AddEdit";
 import Pendings from "./pages/Pendings/Pendings";
 import RoleProtectedRoutes from "./routes/RoleProtectedRoutes";
 import MyCars from "./pages/MyCars/MyCars";
+import CarRents from "./pages/Pendings/CarRents";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="/mycars" element={<MyCars />} />
             <Route path="/details/:id" element={<Details />} />{" "}
             <Route path="/form" element={<Form />} />
+            <Route path="/rents/:carId" element={<CarRents />} />
           </Route>
 
           {/* role protected routes  */}

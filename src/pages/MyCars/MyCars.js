@@ -1,125 +1,184 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import AuthContext from "../../hooks/userContext";
 import { useNavigate } from "react-router-dom";
+import CardView from "../Pendings/CardView";
 
-// Styled components
+// Styled components from Pendings
 const Container = styled.div`
   padding: 20px;
 `;
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const SearchInput = styled.input`
+  padding: 10px;
+  margin-right: 10px;
+  flex: 1;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
 `;
 
-const TableHead = styled.thead`
-  background-color: #f0f0f0;
-`;
-
-const TableHeaderCell = styled.th`
-  padding: 10px;
-  text-align: left;
-`;
-
-const TableBody = styled.tbody``;
-
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 10px;
-`;
-
-const StatusCell = styled.td`
-  padding: 5px 10px;
-  width: 20px;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: bold;
-  ${(props) =>
-    props.status === 1
-      ? `
-      background-color: green;
-      color: white;
-    `
-      : `
-      background-color: yellow;
-      color: black;
-    `}
-`;
-
-const DetailsButton = styled.button`
-  padding: 8px 12px;
-  border: none;
+const PaginationButton = styled.button`
+  padding: 10px 20px;
+  margin: 0 5px;
   background-color: #007bff;
   color: white;
+  border: none;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:focus {
-    outline: none;
+  &:disabled {
+    background-color: #c0c0c0;
+    cursor: not-allowed;
   }
 `;
 
-const getStatusText = (status) => {
-  return status === 1 ? "Active" : "Pending";
-};
+const PerPageButton = styled.button`
+  padding: 10px 20px;
+  margin: 0 5px;
+  background-color: ${(props) => (props.active ? "#007bff" : "#f0f0f0")};
+  color: ${(props) => (props.active ? "white" : "black")};
+  border: ${(props) => (props.active ? "none" : "1px solid #ccc")};
+  cursor: pointer;
+`;
 
 const MyCars = () => {
   const { cars, user } = useContext(AuthContext);
-
-  const userCars = cars.filter((car) => car.userId === user.uid);
   const navigate = useNavigate();
+
+  // State variables
+  const [carList, setCarList] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(5);
+
+  // Filter user-specific cars
+  useEffect(() => {
+    const userCars = cars.filter((car) => car.userId === user.uid);
+    setCarList(userCars);
+    setFilteredCars(userCars);
+  }, [cars, user]);
+
+  // Pagination calculations
+  const indexOfLastCar = currentPage * perPage;
+  const indexOfFirstCar = indexOfLastCar - perPage;
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
+  console.log(currentCars, "currentCars");
+  const totalPages = Math.ceil(filteredCars.length / perPage);
+
+  // Pagination handlers
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Search handlers
+  const handleSearchLocation = (e) => {
+    setSearchLocation(e.target.value);
+    filterCars(searchName, e.target.value);
+  };
+
+  const handleSearchName = (e) => {
+    setSearchName(e.target.value);
+    filterCars(e.target.value, searchLocation);
+  };
+
+  const filterCars = (name, location) => {
+    const filtered = carList.filter((car) => {
+      const normalizedTitle = car.title.toLowerCase();
+      const normalizedLocation = car.location.toLowerCase();
+      const normalizedName = name.toLowerCase();
+      const normalizedLocationFilter = location.toLowerCase();
+      return (
+        normalizedTitle.includes(normalizedName) &&
+        normalizedLocation.includes(normalizedLocationFilter)
+      );
+    });
+    setFilteredCars(filtered);
+    setCurrentPage(1);
+  };
+
+  // Change items per page
+  const changePerPage = (count) => {
+    setPerPage(count);
+    setCurrentPage(1);
+  };
 
   return (
     <Container>
       <h2>My Cars</h2>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Title</TableHeaderCell>
-            <TableHeaderCell>Description</TableHeaderCell>
-            <TableHeaderCell>Location</TableHeaderCell>
-            <TableHeaderCell>Price</TableHeaderCell>
-            <TableHeaderCell>Status</TableHeaderCell>
-            <TableHeaderCell>Details</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {userCars.map((car) => (
-            <TableRow key={car.id}>
-              <TableCell>{car.title}</TableCell>
-              <TableCell>{car.description}</TableCell>
-              <TableCell>{car.location}</TableCell>
-              <TableCell>{car.price}</TableCell>
-              <TableCell>
-                <StatusCell status={car.status}>
-                  {getStatusText(car.status)}
-                </StatusCell>
-              </TableCell>
-              <TableCell>
-                <DetailsButton
-                  onClick={() => {
-                    navigate(`/details/${car.id}`);
-                  }}
-                >
-                  Details
-                </DetailsButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Search by name"
+          value={searchName}
+          onChange={handleSearchName}
+        />
+        <SearchInput
+          type="text"
+          placeholder="Search by location"
+          value={searchLocation}
+          onChange={handleSearchLocation}
+        />
+      </SearchContainer>
+      <div>
+        <PerPageButton active={perPage === 5} onClick={() => changePerPage(5)}>
+          5 per page
+        </PerPageButton>
+        <PerPageButton
+          active={perPage === 15}
+          onClick={() => changePerPage(15)}
+        >
+          15 per page
+        </PerPageButton>
+        <PerPageButton
+          active={perPage === 25}
+          onClick={() => changePerPage(25)}
+        >
+          25 per page
+        </PerPageButton>
+      </div>
+      <div>
+        {currentCars.map((car) => (
+          <CardView
+            key={car.id}
+            car={car}
+            toggleStatus={() => {}}
+            navigate={navigate}
+            removeDisableButton={true}
+          />
+        ))}
+      </div>
+      <PaginationContainer>
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          Previous
+        </PaginationButton>
+        <span>
+          {currentPage} of {totalPages}
+        </span>
+        <PaginationButton
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </PaginationButton>
+      </PaginationContainer>
     </Container>
   );
 };

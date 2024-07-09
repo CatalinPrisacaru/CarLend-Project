@@ -8,9 +8,10 @@ import {
   CardTitle,
   DetailsButton,
   StatusButton,
+  RentButton,
 } from "./StyledPendings";
 
-const CardView = ({ car, toggleStatus, navigate }) => {
+const CardView = ({ car, toggleStatus, navigate, removeDisableButton }) => {
   return (
     <Card>
       <CardImage src={car.images[0]} alt={car.title} />
@@ -41,19 +42,23 @@ const CardView = ({ car, toggleStatus, navigate }) => {
           <strong>Vehicle Type:</strong> {car.vehicleType}
         </CardDetail>
         <CardDetail>
-          <strong>Created At:</strong>{" "}
-          {new Date(car.createdAt).toLocaleString()}
+          <strong>Created At:</strong> {car.createdAt}
         </CardDetail>
         <CardButtons>
           <DetailsButton onClick={() => navigate(`/details/${car.id}`)}>
             Details
           </DetailsButton>
-          <StatusButton
-            status={car.status}
-            onClick={() => toggleStatus(car.id)}
-          >
-            {car.status === 0 ? "Activate" : "Disable"}
-          </StatusButton>
+          {!removeDisableButton && (
+            <StatusButton
+              status={car.status}
+              onClick={() => toggleStatus(car.id)}
+            >
+              {car.status === 0 ? "Activate" : "Disable"}
+            </StatusButton>
+          )}
+          <RentButton onClick={() => navigate(`/rents/${car.id}`)}>
+            See Rents
+          </RentButton>
         </CardButtons>
       </CardContent>
     </Card>

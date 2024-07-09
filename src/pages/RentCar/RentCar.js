@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { DateRange } from "react-date-range";
 import AuthContext from "../../hooks/userContext";
 import Card from "../../components/Card/Card";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
+import BookingPage from "../Details/BookingPage";
 
 const RentCar = () => {
   const { cars } = useContext(AuthContext);
@@ -14,14 +15,17 @@ const RentCar = () => {
   const [passengers, setPassengers] = useState("");
   const [dateRange, setDateRange] = useState([
     {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      startDate: null,
+      endDate: null,
       key: "selection",
     },
   ]);
   const [showCalendar, setShowCalendar] = useState(false);
 
   const calendarRef = useRef(null);
+
+  // State to hold the ID of the selected car for detailed view
+  const [selectedCarId, setSelectedCarId] = useState(null);
 
   // Close calendar if clicked outside
   useEffect(() => {
@@ -66,6 +70,10 @@ const RentCar = () => {
       }
       return 0;
     });
+
+  const handleCardClick = (carId) => {
+    setSelectedCarId(selectedCarId === carId ? null : carId);
+  };
 
   return (
     <div>
@@ -128,10 +136,15 @@ const RentCar = () => {
           <label htmlFor="dateRange">Date Range:</label>
           <DatePickerInput
             onClick={() => setShowCalendar(!showCalendar)}
-            value={`${format(dateRange[0].startDate, "MM/dd/yyyy")} - ${format(
-              dateRange[0].endDate,
-              "MM/dd/yyyy"
-            )}`}
+            value={`${
+              dateRange[0]?.startDate
+                ? format(dateRange[0].startDate, "MM/dd/yyyy")
+                : ""
+            } - ${
+              dateRange[0]?.endDate
+                ? format(dateRange[0].endDate, "MM/dd/yyyy")
+                : ""
+            }`}
             readOnly
           />
           {showCalendar && (
@@ -150,8 +163,27 @@ const RentCar = () => {
       </Filters>
 
       <Container>
-        {filteredCars.map((item, index) => (
-          <Card key={index} item={item} />
+        {filteredCars.map((car, index) => (
+          <div
+            key={car.id}
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Card
+              item={car}
+              handleSelectedCar={() => handleCardClick(car.id)}
+            />
+            <Test>
+              {selectedCarId === car.id && (
+                <AbsoluteBookingPageContainer>
+                  <BookingPage id={car.id} />
+                </AbsoluteBookingPageContainer>
+              )}
+            </Test>
+          </div>
         ))}
       </Container>
     </div>
@@ -177,6 +209,13 @@ const Filters = styled.div`
     align-items: center;
     gap: 10px;
   }
+`;
+
+const Test = styled.div`
+  position: relative;
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const Container = styled.div`
@@ -215,15 +254,11 @@ const FilterGroup = styled.div`
 
     &:focus {
       outline: none;
-      border: 1px solid rgba(0, 212, 255, 0.6);
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      border: 1px solid rgba(0, 123, 255, 0.5);
     }
 
     &:hover {
       border: 1px solid rgba(0, 212, 255, 0.6);
-    }
-    @media (max-width: 1342px) {
-      width: 100%;
     }
   }
 
@@ -313,5 +348,40 @@ const CalendarWrapper = styled.div`
   .rdrEndEdge,
   .rdrInRange {
     background: #3f51b5;
+  }
+`;
+
+const AbsoluteBookingPageContainer = styled.div`
+  width: 1150px;
+  border: 2px solid rgba(0, 212, 255, 0.9);
+  z-index: 1;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+  margin-left: 2%;
+  position: relative; /* This makes it possible to position the pseudo-element relative to this container */
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%; /* Centers the arrow vertically */
+    left: -20px; /* Adjust this value to move the arrow further left or right */
+    transform: translateY(-50%); /* Centers the arrow vertically */
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent rgba(0, 212, 255, 0.9) transparent transparent; /* Creates the arrow shape */
+  }
+
+  @media (max-width: 1700px) {
+    max-width: 800px;
+  }
+
+  @media (max-width: 900px) {
+    width: 90%;
+    max-width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;

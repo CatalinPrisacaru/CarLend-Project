@@ -189,3 +189,20 @@ export const CardButtons = styled.div`
   align-items: center;
   padding: 20px;
 `;
+
+export const RentButton = styled.button`
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;

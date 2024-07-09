@@ -5,6 +5,8 @@ import {
   getDocs,
   query,
   where,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase-config";
 import { getUserByEmail } from "../pages/Home/getUser";
@@ -35,6 +37,44 @@ export const AuthProvider = ({ children }) => {
       console.error("Error fetching cars:", error.message);
     }
   };
+
+  const getCarById = async (carId) => {
+    try {
+      const db = getFirestore();
+      const carDocRef = doc(db, "Cars", carId);
+      const carDoc = await getDoc(carDocRef);
+
+      if (carDoc.exists()) {
+        return { ...carDoc.data(), id: carDoc.id };
+      } else {
+        console.log("No such car!");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching car by ID:", error.message);
+      return null;
+    }
+  };
+
+  // const getUserById = async (userId) => {
+  //   console.log(userId, "user id");
+  //   try {
+  //     const db = getFirestore();
+  //     const userDocRef = doc(db, "users", userId);
+  //     const userDoc = await getDoc(userDocRef);
+
+  //     if (userDoc.exists()) {
+  //       return { ...userDoc.data(), id: userDoc.id };
+  //     } else {
+  //       console.log("No such user!");
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user by ID:", error.message);
+  //     return null;
+  //   }
+  // };
+
   useEffect(() => {
     fetchCars();
   }, []);
@@ -111,6 +151,7 @@ export const AuthProvider = ({ children }) => {
         addCar,
         editCar,
         fetchCars,
+        getCarById,
       }}
     >
       {children}
