@@ -128,7 +128,7 @@ export const LeftContainer = styled.div`
   width: 100%;
 
   @media (min-width: 768px) {
-    max-width: 50%;
+    max-width: 70%;
     padding-right: 20px;
   }
 `;
@@ -138,7 +138,7 @@ export const RightContainer = styled.div`
   width: 100%;
 
   @media (min-width: 768px) {
-    max-width: 50%;
+    max-width: 30%;
     padding-left: 20px;
   }
 `;
@@ -212,6 +212,7 @@ export const BackButton = styled.button`
 `;
 
 export const DateRangeContainer = styled.div`
+  display: flex;
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
@@ -239,22 +240,87 @@ export const InfoItem = styled.div`
   margin-bottom: 8px;
 `;
 
+export const DetailsInfoContainer = styled.div`
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  margin-left: 50px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+export const DetailsInfoItem = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 95%;
+  background: rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  span {
+    font-weight: 700;
+    color: #000;
+  }
+`;
+
+export const DetailsPrice = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+  color: #d9534f;
+  background: #f0f0f0;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 95%;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+export const RentButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 export const RentButton = styled.button`
-  padding: 12px 24px;
+  width: 100%;
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: 600;
   background-color: #1a1a1a;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease,
     box-shadow 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 
   &:hover {
     background-color: #333;
-    transform: translateY(-3px);
+    transform: translateY(-5px); /* Slight vertical lift on hover */
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
   }
 
@@ -270,7 +336,7 @@ export const RentButton = styled.button`
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    border-radius: 8px;
     transition: opacity 0.3s ease;
     opacity: 0.5;
     pointer-events: none;

@@ -22,7 +22,7 @@ import {
   Wrapper,
 } from "./StyleCard";
 
-const Card = ({ item }) => {
+const Card = ({ item, handleSelectedCar }) => {
   const navigate = useNavigate();
 
   const isAutomatic = item.gear === "Automatic" ? true : false;
@@ -81,7 +81,9 @@ const Card = ({ item }) => {
             >
               DETAILS
             </OutlineButton>
-            <FillButton>BOOK NOW</FillButton>
+            <FillButton onClick={() => handleSelectedCar(item)}>
+              BOOK NOW
+            </FillButton>
           </ButtonWrapper>
         </Wrapper>
       </Container>

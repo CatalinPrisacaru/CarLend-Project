@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AnimatedDiv } from "../../../hooks/fadeInUpAnimation/animatedDiv";
 import { useFadeInUpAnimation } from "../../../hooks/fadeInUpAnimation/fadeInUp";
 import styled from "styled-components";
+import AuthContext from "../../../hooks/userContext";
 
 const WelcomeBanner = () => {
   const isVisible = useFadeInUpAnimation();
+  const { user } = useContext(AuthContext);
 
   return (
     <AnimatedDiv animationduration="1s" style={{ opacity: isVisible ? 1 : 0 }}>
       <Container>
-        <h3>Welcome to CarLend</h3>
+        <h3>Welcome to CarLend {user?.displayName}</h3>
         <h1>Discover Your Ideal Vehicle, Anytime, Anywhere.</h1>
       </Container>
     </AnimatedDiv>

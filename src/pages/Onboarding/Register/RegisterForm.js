@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TypeWriterComponent } from "../../../features/TypeWriter/TypeWriterComponent";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, firestore } from "../../../firebase-config";
 import {
   Button,
@@ -17,23 +17,37 @@ import { doc, setDoc } from "firebase/firestore";
 import Logo from "../../../features/Logo/Logo";
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
   const register = async () => {
+    if (username.length < 3) {
+      setError("Username must be at least 3 characters long.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        username,
+        email,
         password
       );
       const user = userCredential.user;
 
+      await updateProfile(user, { displayName: username });
+
       await setDoc(doc(firestore, "users", user.uid), {
         email: user.email,
         isAdmin: false,
+        displayName: username,
       });
+
+      setEmail("");
+      setPassword("");
+      setUsername("");
+      setError("");
     } catch (error) {
       const errorMessage = error.message;
 
@@ -64,8 +78,8 @@ const RegisterPage = () => {
           <Input
             type="text"
             placeholder="Email"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             type="password"
@@ -73,7 +87,15 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button onClick={register}>Register</Button>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Button onClick={register} disabled={username.length < 3}>
+            Register
+          </Button>
           {error && <p style={{ color: "red", fontSize: "small" }}>{error}</p>}
 
           <FancyText>

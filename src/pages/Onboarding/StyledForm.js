@@ -36,7 +36,7 @@ export const Form = styled.div`
   z-index: 2;
 
   @media (min-width: 1200px) {
-    padding-top: 25%;
+    padding-top: 10%;
   }
 `;
 

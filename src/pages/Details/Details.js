@@ -1,13 +1,7 @@
+// Details.js
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-  Timestamp,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import {
   ImagesContainer,
   FirstImage,
@@ -21,13 +15,10 @@ import {
   OwnerImage,
   OwnerActivity,
   BackButton,
-  DateRangeContainer,
-  RentButton,
 } from "./StyledDetails";
-
 import LoadingSkeleton from "./LoadingSkeletonDetails";
 import PhotosModal from "./PhotoModal/PhotoModal";
-import RentDateRangePicker from "./Calendar";
+import BookingPage from "./BookingPage";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -35,7 +26,6 @@ const Details = () => {
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [selectedDates, setSelectedDates] = useState(null); // State to store selected dates
   const db = getFirestore();
 
   const fetchCar = async () => {
@@ -60,64 +50,6 @@ const Details = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, db]);
-
-  const handleDateSelect = (dateRange) => {
-    setSelectedDates(dateRange);
-  };
-
-  const handleRentNow = async () => {
-    try {
-      if (
-        !selectedDates ||
-        !selectedDates.startDate ||
-        !selectedDates.endDate
-      ) {
-        alert("Please select valid start and end dates.");
-        return;
-      }
-
-      const rentedPeriod = {
-        startDate: Timestamp.fromDate(selectedDates.startDate),
-        endDate: Timestamp.fromDate(selectedDates.endDate),
-      };
-
-      const carDocRef = doc(db, "Cars", id);
-      const carSnapshot = await getDoc(carDocRef);
-      const { Rented } = carSnapshot.data();
-
-      if (Rented) {
-        const overlap = Rented?.some((period) => {
-          const start = period.startDate.toDate();
-          const end = period.endDate.toDate();
-          return (
-            (selectedDates.startDate >= start &&
-              selectedDates.startDate <= end) ||
-            (selectedDates.endDate >= start && selectedDates.endDate <= end) ||
-            (selectedDates.startDate <= start && selectedDates.endDate >= end)
-          );
-        });
-
-        if (overlap) {
-          alert(
-            "Selected dates overlap with existing rented periods. Please select different dates."
-          );
-          return;
-        }
-      }
-
-      await updateDoc(carDocRef, {
-        Rented: arrayUnion(rentedPeriod),
-      });
-
-      console.log("Car updated with rented period:", rentedPeriod);
-
-      alert("Car rented successfully!");
-      fetchCar();
-    } catch (error) {
-      console.error("Error renting car:", error);
-      alert("Failed to rent car. Please try again.");
-    }
-  };
 
   if (loading) {
     return <LoadingSkeleton onBack={() => navigate(-1)} />;
@@ -158,10 +90,7 @@ const Details = () => {
           <hr />
           <p>{car.description}</p>
           <p>{car.location}</p>
-          <DateRangeContainer>
-            <RentDateRangePicker car={car} onDateSelect={handleDateSelect} />
-          </DateRangeContainer>
-          <RentButton onClick={handleRentNow}>Rent Now</RentButton>
+          <BookingPage id={id} />
         </LeftContainer>
         <RightContainer>
           <OwnerDetails>
