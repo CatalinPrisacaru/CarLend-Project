@@ -13,6 +13,7 @@ import Pendings from "./pages/Pendings/Pendings";
 import RoleProtectedRoutes from "./routes/RoleProtectedRoutes";
 import MyCars from "./pages/MyCars/MyCars";
 import CarRents from "./pages/Pendings/CarRents";
+import EditCar from "./pages/MyCars/EditCar";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/details/:id" element={<Details />} />{" "}
             <Route path="/form" element={<Form />} />
             <Route path="/rents/:carId" element={<CarRents />} />
+            <Route path="/edit-car/:id" element={<EditCar />} />
           </Route>
 
           {/* role protected routes  */}

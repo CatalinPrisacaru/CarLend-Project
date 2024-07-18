@@ -49,6 +49,11 @@ const HomePage = () => {
 
   const suvCars = cars.filter((car) => car.vehicleType === "SUV");
 
+  const popularRental = cars
+    .filter((car) => Array.isArray(car.Rented))
+    .sort((a, b) => b.Rented.length - a.Rented.length)
+    .slice(0, 10);
+
   return (
     <PageContainer>
       <div>
@@ -96,9 +101,7 @@ const HomePage = () => {
       <Containerrr ref={ref2} isVisible={isVisible2}>
         {isVisible2 && <Carousel items={suvCars} />}
       </Containerrr>
-      <FeaturedCars>
-        <h2>Popular Rentals</h2>
-      </FeaturedCars>
+
       <SectionContainer>
         <TitleSectionContainer>How It Works</TitleSectionContainer>
         <Steps>
@@ -116,6 +119,15 @@ const HomePage = () => {
           </StepCard>
         </Steps>
       </SectionContainer>
+
+      <FeaturedCars>
+        <Container>
+          <h1>Popular Rentals</h1>
+        </Container>
+        <Containerrr ref={ref2} isVisible={isVisible2}>
+          {isVisible2 && <Carousel items={popularRental} />}
+        </Containerrr>
+      </FeaturedCars>
 
       <SectionContainer>
         <TitleSectionContainer>Why Choose Us?</TitleSectionContainer>
