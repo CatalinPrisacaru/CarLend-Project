@@ -31,13 +31,13 @@ export const Header = () => {
         </Logo>
         <NavbarButtons>
           <Button onClick={() => navigate("/")}>Home</Button>
-          <Button onClick={() => navigate("/rentcar")}>Rent-car</Button>
+          <Button onClick={() => navigate("/rentcar")}>Rent a car</Button>
           {isAdmin ? (
             <Button onClick={() => navigate("/pendings")}>Pendings cars</Button>
           ) : (
             <Button onClick={() => navigate("/mycars")}>My cars</Button>
           )}
-          <Button onClick={() => navigate("/images")}>Contact</Button>
+          <Button onClick={() => navigate("/form")}>Rent Your Car</Button>
           <Button
             onClick={() => {
               logoutUser();

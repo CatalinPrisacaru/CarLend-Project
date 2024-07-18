@@ -48,6 +48,13 @@ const CardView = ({ car, toggleStatus, navigate, removeDisableButton }) => {
           <DetailsButton onClick={() => navigate(`/details/${car.id}`)}>
             Details
           </DetailsButton>
+
+          <DetailsButton
+            style={{ backgroundColor: "red" }}
+            onClick={() => navigate(`/edit-car/${car.id}`)}
+          >
+            Edit
+          </DetailsButton>
           {!removeDisableButton && (
             <StatusButton
               status={car.status}

@@ -361,14 +361,14 @@ const AbsoluteBookingPageContainer = styled.div`
   padding: 20px;
   margin-top: 30px;
   margin-left: 2%;
-  position: relative; /* This makes it possible to position the pseudo-element relative to this container */
+  position: relative;
 
   &::before {
     content: "";
     position: absolute;
-    top: 50%; /* Centers the arrow vertically */
-    left: -20px; /* Adjust this value to move the arrow further left or right */
-    transform: translateY(-50%); /* Centers the arrow vertically */
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
     border-width: 10px;
     border-style: solid;
     border-color: transparent rgba(0, 212, 255, 0.9) transparent transparent; /* Creates the arrow shape */

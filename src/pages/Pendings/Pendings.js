@@ -96,8 +96,8 @@ const Pendings = () => {
       const dateB = new Date(convertDateFormat(b.createdAt));
       return sortOrder === "ascending" ? dateA - dateB : dateB - dateA;
     });
-    setSortOrder(sortOrder === "ascending" ? "descending" : "ascending");
-    setCarList(sortedCars);
+    setFilteredCars(sortedCars);
+    setSortOrder(sortOrder === "ascending" ? "descending" : "ascending"); // Toggle sortOrder
   };
 
   useEffect(() => {
@@ -205,7 +205,10 @@ const Pendings = () => {
                 <TableHead>Persons</TableHead>
                 <TableHead>Vehicle Type</TableHead>
                 <TableHead>
-                  Created At <button onClick={() => handleSort()}>Sort</button>
+                  Created At{" "}
+                  <button onClick={() => handleSort()}>
+                    Sort {sortOrder === "ascending" ? "▲" : "▼"}
+                  </button>
                 </TableHead>
                 <TableHead>Details</TableHead>
                 <TableHead>Status</TableHead>

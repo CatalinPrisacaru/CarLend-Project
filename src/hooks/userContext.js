@@ -7,6 +7,7 @@ import {
   where,
   doc,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase-config";
 import { getUserByEmail } from "../pages/Home/getUser";
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
+  const db = getFirestore();
 
   const [isAdmin, setIsAdmin] = useState(null);
   const [cars, setCars] = useState([]);
@@ -129,15 +131,16 @@ export const AuthProvider = ({ children }) => {
     setCars([...cars, car]);
   };
 
-  const editCar = (carId, updatedData) => {
-    const updatedCars = cars.map((car) => {
-      if (car.id === carId) {
-        return { ...car, ...updatedData };
-      }
-      return car;
-    });
+  const updateCar = async (updatedCar) => {
+    try {
+      await setDoc(doc(db, "Cars", updatedCar.id), updatedCar);
 
-    setCars(updatedCars);
+      setCars((prevCars) =>
+        prevCars.map((car) => (car.id === updatedCar.id ? updatedCar : car))
+      );
+    } catch (error) {
+      console.error("Error updating car: ", error);
+    }
   };
 
   return (
@@ -149,7 +152,7 @@ export const AuthProvider = ({ children }) => {
         logoutUser,
         cars,
         addCar,
-        editCar,
+        updateCar,
         fetchCars,
         getCarById,
       }}
