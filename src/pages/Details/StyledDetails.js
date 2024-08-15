@@ -346,3 +346,32 @@ export const RentButton = styled.button`
     opacity: 0.7;
   }
 `;
+
+export const RentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically centers the content */
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+`;
+
+// Styled button for "See more details"
+export const SeeDetailsButton = styled.button`
+  background-color: transparent; /* Transparent background */
+  color: #007bff; /* Button text color */
+  border: 2px solid #007bff; /* Outline border */
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #007bff; /* Background color on hover */
+    color: white; /* Text color changes to white on hover */
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;

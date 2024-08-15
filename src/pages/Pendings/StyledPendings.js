@@ -8,9 +8,11 @@ export const Container = styled.div`
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
+  gap: 10px; /* Add gap between items */
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 `;
 
 export const ToggleButton = styled.button`
@@ -56,16 +58,17 @@ export const PaginationButton = styled.button`
 
 export const PerPageButton = styled.button`
   padding: 8px 16px;
-  background-color: ${(props) => (props.active ? "#007bff" : "#6c757d")};
-  color: ${(props) => (props.active ? "white" : "#333")};
-  border: none;
+  background-color: transparent;
+  border: 2px solid ${(props) => (props.active ? "#007bff" : "#6c757d")};
+  color: ${(props) => (props.active ? "#007bff" : "#6c757d")};
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.active ? "#0056b3" : "#6c757d")};
+    background-color: ${(props) => (props.active ? "#007bff" : "transparent")};
+    color: ${(props) => (props.active ? "white" : "#007bff")};
   }
 `;
 
@@ -73,6 +76,7 @@ export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  gap: 10px; /* Add space between the search inputs */
 `;
 
 export const SearchInput = styled.input`
@@ -115,30 +119,52 @@ export const TableCell = styled.td`
 
 export const DetailsButton = styled.button`
   padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+  width: 110px;
+  margin: 0px 15px;
+  background-color: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
+    color: white;
+  }
+`;
+
+export const EditButton = styled.button`
+  padding: 8px 16px;
+  width: 110px;
+  margin: 0px 15px;
+  background-color: transparent;
+  border: 2px solid #dc3545;
+  color: #dc3545;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #dc3545;
+    color: white;
   }
 `;
 
 export const StatusButton = styled.button`
   padding: 8px 16px;
-  background-color: ${(props) => (props.status === 0 ? "#28a745" : "#dc3545")};
-  color: white;
-  border: none;
+  width: 110px;
+  background-color: transparent;
+  border: 2px solid ${(props) => (props.status === 0 ? "#28a745" : "#dc3545")};
+  color: ${(props) => (props.status === 0 ? "#28a745" : "#dc3545")};
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
     background-color: ${(props) =>
-      props.status === 0 ? "#218838" : "#c82333"};
+      props.status === 0 ? "#28a745" : "#dc3545"};
+    color: white;
   }
 `;
 
@@ -146,8 +172,8 @@ export const StatusButton = styled.button`
 
 export const Card = styled.div`
   display: flex;
-  width: 100%;
-  height: 500px;
+  width: 100%; /* Reduce the card width */
+  height: 500px; /* Reduce the card height */
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -185,15 +211,16 @@ export const CardDetail = styled.p`
 
 export const CardButtons = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   padding: 20px;
 `;
 
 export const RentButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  border: none;
+  background-color: transparent;
+  border: 2px solid #4caf50;
+  width: 110px;
+  color: #4caf50;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
@@ -201,8 +228,10 @@ export const RentButton = styled.button`
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: #45a049;
+    background-color: #4caf50;
+    color: white;
   }
 `;

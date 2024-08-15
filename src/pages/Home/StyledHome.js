@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { scrollAnimation } from "../../components/Button/ScrollDownButton/ScrollDownButton";
 
 export const PageContainer = styled.div`
@@ -136,45 +136,81 @@ export const FAQ = styled.div`
   text-align: center;
 `;
 
-export const Footer = styled.footer`
-  background: #343a40;
-  padding: 4rem 0;
-  color: #fff;
-  text-align: center;
-`;
-
-export const QuickLinks = styled.div`
-  margin-bottom: 2rem;
-
-  a {
-    color: #fff;
-    margin: 0 1rem;
-    text-decoration: none;
-    font-size: 1rem;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-export const SocialMedia = styled.div`
-  a {
-    color: #fff;
-    margin: 0 1rem;
-    font-size: 1.5rem;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
 export const RentYourContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   animation: ${scrollAnimation} 2s infinite;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const SearchBarLocation = styled.input`
+  padding: 1rem;
+  width: calc(100% - 120px); /* Adjust width to leave space for the button */
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 2rem;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
+export const SearchButton = styled.button`
+  padding: 1rem 2rem;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: white;
+  color: #007bff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem; /* Adjust margin for spacing */
+  margin-left: 10px; /* Space between input and button */
+
+  &:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .text {
+    display: inline;
+    font-weight: bold;
+  }
+
+  .image {
+    display: none; /* Hide image initially */
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  &.loading .text {
+    display: none;
+  }
+
+  &.loading .image {
+    display: inline;
+    animation: ${fadeIn} 0.3s forwards;
+  }
 `;

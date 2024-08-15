@@ -140,7 +140,7 @@ const Pendings = () => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "65vh" }}>
       <Container>
         <ToggleButton onClick={toggleViewMode}>
           {viewMode === "card" ? "Switch to Table View" : "Switch to Card View"}

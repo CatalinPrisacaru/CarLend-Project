@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { DateRange } from "react-date-range";
+import { useLocation } from "react-router-dom";
 import AuthContext from "../../hooks/userContext";
 import Card from "../../components/Card/Card";
 import { format } from "date-fns";
@@ -8,11 +9,17 @@ import BookingPage from "../Details/BookingPage";
 
 const RentCar = () => {
   const { cars } = useContext(AuthContext);
+  const location = useLocation(); // Hook to access query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const initialLocation = queryParams.get("location") || ""; // Extract location from URL
 
+  // State for dropdown options
+  const [locations, setLocations] = useState([]);
   const [sortBy, setSortBy] = useState("");
   const [vehicleType, setVehicleType] = useState("");
   const [gearshift, setGearshift] = useState("");
   const [passengers, setPassengers] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation); // Initialize with URL parameter
   const [dateRange, setDateRange] = useState([
     {
       startDate: null,
@@ -23,9 +30,15 @@ const RentCar = () => {
   const [showCalendar, setShowCalendar] = useState(false);
 
   const calendarRef = useRef(null);
-
-  // State to hold the ID of the selected car for detailed view
   const [selectedCarId, setSelectedCarId] = useState(null);
+
+  // Extract unique locations when cars data changes
+  useEffect(() => {
+    if (cars && cars.length > 0) {
+      const uniqueLocations = [...new Set(cars.map((car) => car.location))];
+      setLocations(uniqueLocations);
+    }
+  }, [cars]);
 
   // Close calendar if clicked outside
   useEffect(() => {
@@ -42,7 +55,6 @@ const RentCar = () => {
 
   const isCarAvailable = (car, startDate, endDate) => {
     if (!car.Rented || car.Rented.length === 0) return true;
-
     return car.Rented.every((rentPeriod) => {
       const rentStartDate = new Date(rentPeriod.startDate.seconds * 1000);
       const rentEndDate = new Date(rentPeriod.endDate.seconds * 1000);
@@ -56,6 +68,7 @@ const RentCar = () => {
         (vehicleType ? car.vehicleType === vehicleType : true) &&
         (gearshift ? car.gear === gearshift : true) &&
         (passengers ? car.persons >= parseInt(passengers) : true) &&
+        (selectedLocation ? car.location === selectedLocation : true) && // Filter by location
         isCarAvailable(car, dateRange[0]?.startDate, dateRange[0].endDate)
     )
     .sort((a, b) => {
@@ -76,7 +89,7 @@ const RentCar = () => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "65vh" }}>
       <h1>Rent a Car</h1>
       <Filters>
         <FilterGroup>
@@ -133,6 +146,21 @@ const RentCar = () => {
           />
         </FilterGroup>
         <FilterGroup>
+          <label htmlFor="location">Location:</label>
+          <select
+            id="location"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            <option value="">All Locations</option>
+            {locations.map((location) => (
+              <option key={location} value={location}>
+                {location}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
+        <FilterGroup>
           <label htmlFor="dateRange">Date Range:</label>
           <DatePickerInput
             onClick={() => setShowCalendar(!showCalendar)}
@@ -163,28 +191,35 @@ const RentCar = () => {
       </Filters>
 
       <Container>
-        {filteredCars.map((car, index) => (
-          <div
-            key={car.id}
-            style={{
-              position: "relative",
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Card
-              item={car}
-              handleSelectedCar={() => handleCardClick(car.id)}
-            />
-            <Test>
-              {selectedCarId === car.id && (
-                <AbsoluteBookingPageContainer>
-                  <BookingPage id={car.id} />
-                </AbsoluteBookingPageContainer>
-              )}
-            </Test>
-          </div>
-        ))}
+        {filteredCars.length === 0 ? (
+          <NoResultsMessage>
+            Sorry, but no cars match your search criteria. Try adjusting your
+            filters or search again.
+          </NoResultsMessage>
+        ) : (
+          filteredCars.map((car) => (
+            <div
+              key={car.id}
+              style={{
+                position: "relative",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Card
+                item={car}
+                handleSelectedCar={() => handleCardClick(car.id)}
+              />
+              <Test>
+                {selectedCarId === car.id && (
+                  <AbsoluteBookingPageContainer>
+                    <BookingPage id={car.id} />
+                  </AbsoluteBookingPageContainer>
+                )}
+              </Test>
+            </div>
+          ))
+        )}
       </Container>
     </div>
   );
@@ -204,7 +239,6 @@ const Filters = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 1342px) {
-    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -384,4 +418,17 @@ const AbsoluteBookingPageContainer = styled.div`
     left: 50%;
     transform: translateX(-50%);
   }
+`;
+
+const NoResultsMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  margin: 20px 0;
 `;

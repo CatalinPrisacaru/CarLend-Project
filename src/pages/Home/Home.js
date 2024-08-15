@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthContext from "../../hooks/userContext";
 import { useContext } from "react";
 import WelcomeBanner, { Container } from "./Home-components/WelcomeBanner";
 import BackgroundImage from "./Home-components/BackgroundImage";
+import carGif from "../../assests/images/cargif.gif";
 
 import Carousel from "../../components/Carousel/Carousel";
 import useScrollAnimation from "../../hooks/VisibilityObserver/useScrollAnimation.js";
@@ -14,17 +15,15 @@ import {
   Container100vh,
   FAQ,
   FeaturedCars,
-  Footer,
   HeroContent,
   HeroSection,
   Offers,
   PageContainer,
-  QuickLinks,
   RentYourContainer,
   Resources,
-  SearchBar,
+  SearchBarLocation,
+  SearchButton,
   SectionContainer,
-  SocialMedia,
   StepCard,
   StepDescription,
   StepTitle,
@@ -45,9 +44,23 @@ const HomePage = () => {
 
   const { targetRef: ref1, isVisible: isVisible1 } = useScrollAnimation();
   const { targetRef: ref2, isVisible: isVisible2 } = useScrollAnimation();
-  const { targetRef: ref3, isVisible: isVisible3 } = useScrollAnimation();
 
   const suvCars = cars.filter((car) => car.vehicleType === "SUV");
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    if (searchTerm.trim()) {
+      setIsLoading(true);
+
+      // Simulate loading time
+      setTimeout(() => {
+        navigate(`/rentcar?location=${encodeURIComponent(searchTerm.trim())}`);
+      }, 3000); // Adjust the duration to match the loading effect
+    }
+  };
 
   const popularRental = cars
     .filter((car) => Array.isArray(car.Rented))
@@ -76,24 +89,43 @@ const HomePage = () => {
           <h1>Most Recent cars </h1>
         </Container>
         <Containerrr ref={ref1} isVisible={isVisible1}>
-          {isVisible1 && <Carousel items={cars} />}
+          {isVisible1 && <Carousel isCarousel items={cars} />}
         </Containerrr>
       </div>
 
-      <Containerrr ref={ref3} isVisible={isVisible3}>
-        {isVisible3 && (
-          <HeroSection>
-            <HeroContent>
+      <HeroSection>
+        <HeroContent>
+          {isLoading ? (
+            <>
+              <img src={carGif} alt="Loading" className="image" />
+              <h1>Searching for your dream car</h1>
+            </>
+          ) : (
+            <>
               <h1>Rent Your Dream Car Today</h1>
               <p>Drive the Best, Rent the Best</p>
-              <SearchBar
-                type="text"
-                placeholder="Search for cars by location"
-              />
-            </HeroContent>
-          </HeroSection>
-        )}
-      </Containerrr>
+              <form
+                onSubmit={handleSearch}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <SearchBarLocation
+                  type="text"
+                  placeholder="Search for cars by location"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <SearchButton
+                  type="submit"
+                  className={isLoading ? "loading" : ""}
+                >
+                  <span className="text">Search</span>
+                  <img src={carGif} alt="Loading" className="image" />
+                </SearchButton>
+              </form>
+            </>
+          )}
+        </HeroContent>
+      </HeroSection>
 
       <Container>
         <h1>SUV </h1>
@@ -175,26 +207,6 @@ const HomePage = () => {
         <h2>Frequently Asked Questions</h2>
         {/* Display FAQs here */}
       </FAQ>
-
-      <Footer>
-        <QuickLinks>
-          <a href="/">About Us</a>
-          <a href="/">Contact</a>
-          <a href="/">Terms of Service</a>
-          <a href="/">Privacy Policy</a>
-        </QuickLinks>
-        <SocialMedia>
-          <a href="/">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="/">
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a href="/">
-            <i className="fab fa-instagram"></i>
-          </a>
-        </SocialMedia>
-      </Footer>
     </PageContainer>
   );
 };
