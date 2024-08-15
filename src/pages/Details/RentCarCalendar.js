@@ -41,7 +41,7 @@ const RentDateDetails = ({
           Pick-up location: <span>{car.location}</span>
         </DetailsInfoItem>
         <DetailsPrice>
-          Total price:{" "}
+          Total price:
           {totalPrice > 0 ? `$${totalPrice}` : "Select dates to see price"}
         </DetailsPrice>
         <RentButtonContainer>

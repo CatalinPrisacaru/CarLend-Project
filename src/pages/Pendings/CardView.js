@@ -9,6 +9,7 @@ import {
   DetailsButton,
   StatusButton,
   RentButton,
+  EditButton,
 } from "./StyledPendings";
 
 const CardView = ({ car, toggleStatus, navigate, removeDisableButton }) => {
@@ -49,12 +50,9 @@ const CardView = ({ car, toggleStatus, navigate, removeDisableButton }) => {
             Details
           </DetailsButton>
 
-          <DetailsButton
-            style={{ backgroundColor: "red" }}
-            onClick={() => navigate(`/edit-car/${car.id}`)}
-          >
+          <EditButton onClick={() => navigate(`/edit-car/${car.id}`)}>
             Edit
-          </DetailsButton>
+          </EditButton>
           {!removeDisableButton && (
             <StatusButton
               status={car.status}

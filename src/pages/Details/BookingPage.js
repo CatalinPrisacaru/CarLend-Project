@@ -9,8 +9,11 @@ import {
 } from "firebase/firestore";
 import RentDateDetails from "./RentCarCalendar";
 import AuthContext from "../../hooks/userContext";
+import { useNavigate } from "react-router-dom";
+import { RentHeader, SeeDetailsButton } from "./StyledDetails";
 
-const BookingPage = ({ id }) => {
+const BookingPage = ({ isCarousel, id }) => {
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [car, setCar] = useState(null);
   const [selectedDates, setSelectedDates] = useState(null);
@@ -94,7 +97,7 @@ const BookingPage = ({ id }) => {
         startDate: Timestamp.fromDate(selectedDates.startDate),
         endDate: Timestamp.fromDate(selectedDates.endDate),
         userID: user.uid,
-        userName: user.displayName,
+        userName: user.displayName || "Anonymous",
         userEmail: user.email,
       };
 
@@ -141,16 +144,27 @@ const BookingPage = ({ id }) => {
   }
 
   const totalDays = calculateTotalDays();
-  const totalPrice = totalDays * (car?.price ?? 0);
+  const price = parseFloat((car?.price ?? "").replace(",", "."));
+  const totalPrice = totalDays * (Number.isNaN(price) ? 0 : price);
+
+  const formattedTotalPrice = totalPrice.toFixed(2);
 
   return (
     <div>
-      <h1>Booking Page for {car?.title}</h1>
+      <RentHeader>
+        <h1>Booking Page for {car?.title}</h1>
+        {isCarousel && (
+          <SeeDetailsButton onClick={() => navigate(`/details/${id}`)}>
+            See more details
+          </SeeDetailsButton>
+        )}
+      </RentHeader>
+
       <RentDateDetails
         car={car}
         selectedDates={selectedDates}
         onDateSelect={handleDateSelect}
-        totalPrice={totalPrice}
+        totalPrice={formattedTotalPrice}
         onRentNow={handleRentNow}
       />
       {error && <p style={{ color: "red" }}>{error}</p>}

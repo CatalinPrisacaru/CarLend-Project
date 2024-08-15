@@ -45,7 +45,7 @@ const flickityOptions = {
   autoPlay: true,
 };
 
-const Carousel = ({ items }) => {
+const Carousel = ({ isCarousel, items }) => {
   return (
     <CarouselContainer>
       <Flickity
@@ -54,14 +54,13 @@ const Carousel = ({ items }) => {
         options={flickityOptions}
         disableImagesLoaded={false}
         reloadOnUpdate
-        static
       >
         {!!items &&
           items
             .filter((item) => item?.status === 1)
             .map((item, index) => (
               <CarouselItem key={index}>
-                <Card item={item} />
+                <Card item={item} isCarousel />
                 <GradientOverlay />
               </CarouselItem>
             ))}

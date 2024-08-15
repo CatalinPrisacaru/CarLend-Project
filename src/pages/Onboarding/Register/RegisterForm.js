@@ -93,9 +93,7 @@ const RegisterPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Button onClick={register} disabled={username.length < 3}>
-            Register
-          </Button>
+          <Button onClick={register}>Register</Button>
           {error && <p style={{ color: "red", fontSize: "small" }}>{error}</p>}
 
           <FancyText>

@@ -7,6 +7,15 @@ import CardView from "../Pendings/CardView";
 // Styled components from Pendings
 const Container = styled.div`
   padding: 20px;
+  min-height: 62vh;
+`;
+
+const Title = styled.div`
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0px 30px 0px;
 `;
 
 const SearchContainer = styled.div`
@@ -16,20 +25,38 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  padding: 10px;
+  padding: 10px 15px;
   margin-right: 10px;
   flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
 `;
 
 const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  span {
+    margin: 25px 0px;
+  }
 `;
 
 const PaginationButton = styled.button`
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 20px 5px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -40,9 +67,18 @@ const PaginationButton = styled.button`
   }
 `;
 
+const PerPageContainer = styled.div`
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+  span {
+    margin: 25px 0px;
+  }
+`;
+
 const PerPageButton = styled.button`
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 30px 5px;
   background-color: ${(props) => (props.active ? "#007bff" : "#f0f0f0")};
   color: ${(props) => (props.active ? "white" : "black")};
   border: ${(props) => (props.active ? "none" : "1px solid #ccc")};
@@ -72,7 +108,6 @@ const MyCars = () => {
   const indexOfLastCar = currentPage * perPage;
   const indexOfFirstCar = indexOfLastCar - perPage;
   const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
-  console.log(currentCars, "currentCars");
   const totalPages = Math.ceil(filteredCars.length / perPage);
 
   // Pagination handlers
@@ -122,7 +157,7 @@ const MyCars = () => {
 
   return (
     <Container>
-      <h2>My Cars</h2>
+      <Title>My Cars</Title>
       <SearchContainer>
         <SearchInput
           type="text"
@@ -137,7 +172,7 @@ const MyCars = () => {
           onChange={handleSearchLocation}
         />
       </SearchContainer>
-      <div>
+      <PerPageContainer>
         <PerPageButton active={perPage === 5} onClick={() => changePerPage(5)}>
           5 per page
         </PerPageButton>
@@ -153,7 +188,7 @@ const MyCars = () => {
         >
           25 per page
         </PerPageButton>
-      </div>
+      </PerPageContainer>
       <div>
         {currentCars.map((car) => (
           <CardView
