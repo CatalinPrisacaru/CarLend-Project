@@ -178,6 +178,10 @@ const Pendings = () => {
           >
             25 per page
           </PerPageButton>
+
+          <PerPageButton onClick={() => handleSort()}>
+            Sort {sortOrder === "ascending" ? "▲" : "▼"}
+          </PerPageButton>
         </div>
       </Container>
       {viewMode === "card" ? (
@@ -204,13 +208,10 @@ const Pendings = () => {
                 <TableHead>Gear</TableHead>
                 <TableHead>Persons</TableHead>
                 <TableHead>Vehicle Type</TableHead>
-                <TableHead>
-                  Created At{" "}
-                  <button onClick={() => handleSort()}>
-                    Sort {sortOrder === "ascending" ? "▲" : "▼"}
-                  </button>
-                </TableHead>
+                <TableHead>Created At </TableHead>
                 <TableHead>Details</TableHead>
+                <TableHead>Edit</TableHead>
+                <TableHead>See Rents</TableHead>
                 <TableHead>Status</TableHead>
               </tr>
             </thead>

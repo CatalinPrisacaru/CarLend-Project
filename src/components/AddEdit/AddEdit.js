@@ -4,6 +4,7 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import AuthContext from "../../hooks/userContext";
 import { useNavigate } from "react-router-dom";
+import gifCar from "../../assests/images/cargif.gif";
 
 // Styled components
 const ModalBackground = styled.div`
@@ -25,7 +26,7 @@ const ModalContainer = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 1600px;
-  height: 800px;
+  height: 94%;
   max-width: 90%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -219,18 +220,18 @@ const Form = () => {
     location: "",
     images: [],
     gear: "Manual",
-    persons: "2",
+    seats: "2",
     vehicleType: "Sedan",
     status: 0,
     createdAt: "",
     userId: user.uid,
-    otherPersons: "",
+    otherSeats: "",
   });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [isOpen, setIsOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log(errors, "errors");
   const closeModal = () => {
@@ -275,10 +276,9 @@ const Form = () => {
       if (!formData.location) newErrors.location = "Location is required";
     } else if (currentStep === 3) {
       if (!formData.gear) newErrors.gear = "Gear is required";
-      if (!formData.persons)
-        newErrors.persons = "Number of persons is required";
-      if (formData.persons === "Other" && !formData.otherPersons) {
-        newErrors.otherPersons = "Please specify the number of persons";
+      if (!formData.seats) newErrors.seats = "Number of seats is required";
+      if (formData.seats === "Other" && !formData.otherSeats) {
+        newErrors.otherSeats = "Please specify the number of seats";
       }
       if (!formData.vehicleType)
         newErrors.vehicleType = "Vehicle type is required";
@@ -332,10 +332,10 @@ const Form = () => {
         location: formData.location,
         images: imageUrls,
         gear: formData.gear,
-        persons:
-          formData.persons === "Other"
-            ? parseInt(formData.otherPersons)
-            : parseInt(formData.persons),
+        seats:
+          formData.seats === "Other"
+            ? parseInt(formData.otherSeats)
+            : parseInt(formData.seats),
         vehicleType: formData.vehicleType,
         status: formData.status,
         createdAt: createdAtString,
@@ -366,8 +366,8 @@ const Form = () => {
     setFormData({ ...formData, vehicleType });
   };
 
-  const handlePersonsSelect = (persons) => {
-    setFormData({ ...formData, persons, otherPersons: "" });
+  const handleSeatSelection = (seats) => {
+    setFormData({ ...formData, seats, otherSeats: "" });
   };
 
   const handleRemoveImage = (index) => {
@@ -385,7 +385,7 @@ const Form = () => {
   const steps = [
     { label: "Title & Description" },
     { label: "Price & Location" },
-    { label: "Gear , Number of persons & Vehicle type" },
+    { label: "Gear , Number of seats & Vehicle type" },
     { label: "Images" },
     { label: "Complete" },
   ];
@@ -494,46 +494,46 @@ const Form = () => {
                       )}
                     </FormGroup>
                     <FormGroup>
-                      <label>Number of persons:</label>
+                      <label>Number of seats:</label>
                       <GearCardContainer>
                         <GearCard
-                          selected={formData.persons === "2"}
-                          onClick={() => handlePersonsSelect("2")}
+                          selected={formData.seats === "2"}
+                          onClick={() => handleSeatSelection("2")}
                         >
                           2
                         </GearCard>
                         <GearCard
-                          selected={formData.persons === "4"}
-                          onClick={() => handlePersonsSelect("4")}
+                          selected={formData.seats === "4"}
+                          onClick={() => handleSeatSelection("4")}
                         >
                           4
                         </GearCard>
                         <GearCard
-                          selected={formData.persons === "6"}
-                          onClick={() => handlePersonsSelect("6")}
+                          selected={formData.seats === "6"}
+                          onClick={() => handleSeatSelection("6")}
                         >
                           6
                         </GearCard>
                         <GearCard
-                          selected={formData.persons === "Other"}
-                          onClick={() => handlePersonsSelect("Other")}
+                          selected={formData.seats === "Other"}
+                          onClick={() => handleSeatSelection("Other")}
                         >
                           Other
                         </GearCard>
                       </GearCardContainer>
-                      {formData.persons === "Other" && (
+                      {formData.seats === "Other" && (
                         <input
                           type="number"
-                          name="otherPersons"
-                          value={formData.otherPersons}
+                          name="otherSeats"
+                          value={formData.otherSeats}
                           onChange={handleChange}
                         />
                       )}
-                      {errors.persons && (
-                        <span className="error">{errors.persons}</span>
+                      {errors.seats && (
+                        <span className="error">{errors.seats}</span>
                       )}
-                      {errors.otherPersons && formData.persons === "Other" && (
-                        <span className="error">{errors.otherPersons}</span>
+                      {errors.otherSeats && formData.seats === "Other" && (
+                        <span className="error">{errors.otherSeats}</span>
                       )}
                     </FormGroup>
                     <FormGroup>
@@ -584,7 +584,7 @@ const Form = () => {
                           Electric Vehicle
                         </GearCard>
                         <GearCard
-                          selected={formData.vehicleType === "Luxury vehicle"}
+                          selected={formData.vehicleType === "Luxury Vehicle"}
                           onClick={() =>
                             handleVehicleTypeSelect("Luxury Vehicle")
                           }
@@ -643,7 +643,9 @@ const Form = () => {
                 {currentStep === 5 && (
                   <>
                     {isLoading ? (
-                      <div>Loading...</div>
+                      <div>
+                        <img src={gifCar} alt="loader" />
+                      </div>
                     ) : (
                       <>
                         <h3>{displaySteps}</h3>

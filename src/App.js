@@ -19,6 +19,8 @@ import Footer from "./components/Footer/Footer";
 import ContactUs from "./pages/Informations/ContactUs/Contact";
 import TermsOfService from "./pages/Informations/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/Informations/PrivacyPolicy/PrivacyPolicy";
+import PaymentPage from "./pages/Details/PaymentForm";
+import ConfirmationPage from "./pages/Details/ConfirmationPage";
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
             <Route path="/form" element={<Form />} />
             <Route path="/rents/:carId" element={<CarRents />} />
             <Route path="/edit-car/:id" element={<EditCar />} />
+            <Route path="/payment/:id" element={<PaymentPage />} />
+            <Route path="/confirmation/:carId" element={<ConfirmationPage />} />
           </Route>
 
           {/* role protected routes  */}

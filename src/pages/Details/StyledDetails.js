@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import arrowLeft from "../../assests/icons/arrow-narrow-left.svg";
 
 export const ImagesContainer = styled.div`
   display: flex;
@@ -173,41 +172,6 @@ export const OwnerActivity = styled.div`
 
   h3 {
     margin: 7px;
-  }
-`;
-
-export const BackButton = styled.button`
-  display: flex;
-  align-items: center;
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-  background-color: transparent;
-  border: none;
-  padding-bottom: 20px;
-  cursor: pointer;
-  outline: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-
-  &:hover {
-    color: #000;
-    transform: translateX(-2px);
-  }
-
-  &:active {
-    transform: translateX(1px);
-  }
-
-  .icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-    background-image: url(${arrowLeft});
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: grayscale(100%);
   }
 `;
 

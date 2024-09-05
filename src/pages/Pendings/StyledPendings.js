@@ -88,33 +88,47 @@ export const SearchInput = styled.input`
   font-size: 14px;
 `;
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1rem;
-  font-family: Arial, sans-serif;
-`;
-
-export const TableHead = styled.th`
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  white-space: normal;
-`;
-
-// TableView.js styled
-
 export const TableRow = styled.tr`
   &:hover {
-    background-color: #f1f1f1;
+    background-color: #e9e9e9;
+  }
+
+  &:nth-child(even) {
+    background-color: #f9f9f9;
   }
 `;
 
 export const TableCell = styled.td`
   padding: 12px;
   border-bottom: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #fff;
+  border-radius: 4px;
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+export const TableHead = styled.th`
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+  cursor: pointer;
+  white-space: normal;
+  text-wrap: nowrap;
+  background-color: #4a4a4a;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
 `;
 
 export const DetailsButton = styled.button`
@@ -172,8 +186,8 @@ export const StatusButton = styled.button`
 
 export const Card = styled.div`
   display: flex;
-  width: 100%; /* Reduce the card width */
-  height: 500px; /* Reduce the card height */
+  width: 100%;
+  height: 500px;
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -219,13 +233,14 @@ export const CardButtons = styled.div`
 export const RentButton = styled.button`
   background-color: transparent;
   border: 2px solid #4caf50;
+  max-height: 35px;
   width: 110px;
   color: #4caf50;
-  padding: 10px 20px;
+  padding: 8px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
+  margin: 4px 2px 4px 20px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;

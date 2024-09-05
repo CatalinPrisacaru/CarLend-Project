@@ -14,11 +14,11 @@ import {
   OwnerDetails,
   OwnerImage,
   OwnerActivity,
-  BackButton,
 } from "./StyledDetails";
 import LoadingSkeleton from "./LoadingSkeletonDetails";
 import PhotosModal from "./PhotoModal/PhotoModal";
 import BookingPage from "./BookingPage";
+import BackButton from "../../components/Reusable/GoBackButton/GoBackButton";
 
 const Details = () => {
   const navigate = useNavigate();
@@ -63,10 +63,7 @@ const Details = () => {
         images={car?.images}
       />
 
-      <BackButton onClick={() => navigate(-1)}>
-        <div className="icon" />
-        Go back
-      </BackButton>
+      <BackButton />
       <ImagesContainer>
         <FirstImage>
           <img src={car.images[0]} alt="Main Car" />
@@ -86,10 +83,10 @@ const Details = () => {
       <Container>
         <LeftContainer>
           <h1>{car.title}</h1>
-          <h3>{car.price}</h3>
+          <h3>{car.price}$ / day</h3>
+          <p>{car.location}</p>
           <hr />
           <p>{car.description}</p>
-          <p>{car.location}</p>
           <BookingPage id={id} />
         </LeftContainer>
         <RightContainer>

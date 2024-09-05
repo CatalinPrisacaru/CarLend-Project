@@ -62,9 +62,9 @@ const Card = ({ isCarousel, item, handleSelectedCar }) => {
               </HeaderContainer>
               <HeaderContainer>
                 <IconContainer>
-                  <Icon src={person} alt="person" />
+                  <Icon src={person} alt="seats" />
                 </IconContainer>
-                <TextContainer>{item.persons}</TextContainer>
+                <TextContainer>{item.seats}</TextContainer>
               </HeaderContainer>
             </div>
             <BannerImage>
