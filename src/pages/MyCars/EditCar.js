@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import AuthContext from "../../hooks/userContext";
 import carGif from "../../assests/images/cargif.gif";
-import { BackButton } from "../Details/StyledDetails";
+import BackButton from "../../components/Reusable/GoBackButton/GoBackButton";
 
 const Container = styled.div`
   padding: 20px;
@@ -155,7 +155,7 @@ const EditCar = () => {
   const [gear, setGear] = useState("");
   const [vehicleType, setVehicleType] = useState(""); // New state for vehicle type
   const [price, setPrice] = useState("");
-  const [persons, setPersons] = useState("");
+  const [seats, setSeats] = useState("");
   const [images, setImages] = useState([]);
   const status = 0;
 
@@ -169,7 +169,7 @@ const EditCar = () => {
       setGear(selectedCar.gear);
       setVehicleType(selectedCar.vehicleType);
       setPrice(selectedCar.price);
-      setPersons(selectedCar.persons);
+      setSeats(selectedCar.seats);
       setImages(selectedCar.images);
     }
   }, [id, cars]);
@@ -183,8 +183,8 @@ const EditCar = () => {
     if (!vehicleType.trim()) errors.vehicleType = "Vehicle type is required."; // Validation for vehicle type
     if (isNaN(price) || price <= 0)
       errors.price = "Price must be a valid number.";
-    if (isNaN(persons) || persons <= 0)
-      errors.persons = "Persons must be a valid number.";
+    if (isNaN(seats) || seats <= 0)
+      errors.seats = "Seats must be a valid number.";
 
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -202,7 +202,7 @@ const EditCar = () => {
       gear,
       vehicleType,
       price,
-      persons,
+      seats,
       images,
       status,
     };
@@ -245,10 +245,7 @@ const EditCar = () => {
 
   return (
     <Container>
-      <BackButton onClick={() => navigate(-1)}>
-        <div className="icon" />
-        Go back
-      </BackButton>
+      <BackButton />
       <h2>Edit Car</h2>
       <form>
         <InputField>
@@ -320,13 +317,13 @@ const EditCar = () => {
           {errors.price && <ErrorMessage>{errors.price}</ErrorMessage>}
         </InputField>
         <InputField>
-          <label>Persons</label>
+          <label>Seats</label>
           <input
             type="number"
-            value={persons}
-            onChange={(e) => setPersons(e.target.value)}
+            value={seats}
+            onChange={(e) => setSeats(e.target.value)}
           />
-          {errors.persons && <ErrorMessage>{errors.persons}</ErrorMessage>}
+          {errors.seats && <ErrorMessage>{errors.seats}</ErrorMessage>}
         </InputField>
         <InputField>
           <label>Images</label>

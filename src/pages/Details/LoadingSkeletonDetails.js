@@ -12,16 +12,13 @@ import {
   OwnerDetails,
   OwnerImage,
   OwnerActivity,
-  BackButton,
 } from "./StyledDetails";
+import BackButton from "../../components/Reusable/GoBackButton/GoBackButton";
 
 const LoadingSkeleton = ({ onBack }) => {
   return (
     <div>
-      <BackButton onClick={onBack}>
-        <div className="icon" />
-        Go back
-      </BackButton>
+      <BackButton />
       <ImagesContainer>
         <FirstImage>
           <Skeleton height={300} width="100%" />

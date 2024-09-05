@@ -68,7 +68,7 @@ const RentCar = () => {
         (vehicleType ? car.vehicleType === vehicleType : true) &&
         (gearshift ? car.gear === gearshift : true) &&
         (passengers ? car.persons >= parseInt(passengers) : true) &&
-        (selectedLocation ? car.location === selectedLocation : true) && // Filter by location
+        (selectedLocation ? car.location === selectedLocation : true) &&
         isCarAvailable(car, dateRange[0]?.startDate, dateRange[0].endDate)
     )
     .sort((a, b) => {
@@ -238,7 +238,7 @@ const Filters = styled.div`
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  @media (max-width: 1342px) {
+  @media (max-width: 1422px) {
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -283,7 +283,7 @@ const FilterGroup = styled.div`
     border-radius: 6px;
     transition: all 0.3s ease;
     background-color: white;
-    min-width: 200px;
+    min-width: 180px;
     text-align-last: center;
 
     &:focus {

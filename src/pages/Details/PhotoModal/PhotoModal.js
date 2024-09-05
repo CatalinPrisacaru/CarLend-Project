@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Share } from "../../../assests/icons/share.svg";
 import { ReactComponent as Heart } from "../../../assests/icons/chevron-left.svg";
-import { BackButton } from "../StyledDetails";
+import BackButton from "../../../components/Reusable/GoBackButton/GoBackButton";
 
 const Overlay = styled.div`
   position: fixed;
@@ -145,10 +145,7 @@ const PhotosModal = ({ showModal, setShowModal, images }) => {
         <ModalWrapper>
           <ModalContent>
             <ModalHeader>
-              <BackButton onClick={() => setShowModal(false)}>
-                <div className="icon" />
-                Go back
-              </BackButton>
+              <BackButton onClick={() => setShowModal(false)} />
 
               <RightButtons>
                 <Button>

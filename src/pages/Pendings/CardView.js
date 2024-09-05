@@ -37,7 +37,7 @@ const CardView = ({ car, toggleStatus, navigate, removeDisableButton }) => {
           <strong>Gear:</strong> {car.gear}
         </CardDetail>
         <CardDetail>
-          <strong>Persons:</strong> {car.persons}
+          <strong>Seats:</strong> {car.seats}
         </CardDetail>
         <CardDetail>
           <strong>Vehicle Type:</strong> {car.vehicleType}

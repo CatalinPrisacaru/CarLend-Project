@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  Timestamp,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import RentDateDetails from "./RentCarCalendar";
 import AuthContext from "../../hooks/userContext";
 import { useNavigate } from "react-router-dom";
@@ -51,36 +44,12 @@ const BookingPage = ({ isCarousel, id }) => {
     if (selectedDates?.startDate && selectedDates?.endDate) {
       const start = selectedDates.startDate;
       const end = selectedDates.endDate;
-      // Calculate the number of days between start and end date
       const timeDiff = end.getTime() - start.getTime();
-      const days = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert to days and round up
+      const days = Math.ceil(timeDiff / (1000 * 3600 * 24));
       return days;
     }
     return 0;
   };
-
-  const fetchCar = async () => {
-    try {
-      const docRef = doc(db, "Cars", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setCar(docSnap.data());
-      } else {
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.error("Error fetching document:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (id) {
-      fetchCar();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, db]);
 
   const handleRentNow = async () => {
     try {
@@ -92,14 +61,6 @@ const BookingPage = ({ isCarousel, id }) => {
         setError("Please select valid start and end dates.");
         return;
       }
-
-      const rentedPeriod = {
-        startDate: Timestamp.fromDate(selectedDates.startDate),
-        endDate: Timestamp.fromDate(selectedDates.endDate),
-        userID: user.uid,
-        userName: user.displayName || "Anonymous",
-        userEmail: user.email,
-      };
 
       const carDocRef = doc(db, "Cars", id);
       const carSnapshot = await getDoc(carDocRef);
@@ -125,17 +86,26 @@ const BookingPage = ({ isCarousel, id }) => {
         }
       }
 
-      await updateDoc(carDocRef, {
-        Rented: arrayUnion(rentedPeriod),
+      // Calculate total price
+      const totalDays = calculateTotalDays();
+      const price = parseFloat((car?.price ?? "").replace(",", "."));
+      const totalPrice = totalDays * (Number.isNaN(price) ? 0 : price);
+      const formattedTotalPrice = totalPrice.toFixed(2);
+
+      console.log(id, user, formattedTotalPrice, selectedDates, "vvasd123123");
+
+      // Navigate to the payment page with the required state
+      navigate(`/payment/${id}`, {
+        state: {
+          carId: id,
+          totalPrice: formattedTotalPrice,
+          selectedDates: selectedDates,
+          user,
+        },
       });
-
-      console.log("Car updated with rented period:", rentedPeriod);
-
-      setError(null); // Clear any previous error
-      fetchCar();
     } catch (error) {
-      console.error("Error renting car:", error);
-      setError("Failed to rent car. Please try again.");
+      console.error("Error checking date overlap or navigating:", error);
+      setError("Failed to proceed. Please try again.");
     }
   };
 
